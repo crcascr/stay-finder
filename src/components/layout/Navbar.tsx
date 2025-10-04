@@ -1,13 +1,19 @@
+import { useNavigate } from "react-router-dom";
+
 interface NavbarProps {
   onSignUp?: () => void;
   onLogin?: () => void;
 }
 
 export default function Navbar({ onSignUp, onLogin }: NavbarProps) {
+  const navigate = useNavigate();
   return (
     <header className="sticky top-0 z-50 bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-sm border-b border-border-light dark:border-border-dark">
       <nav className="container mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+        <div
+          className="flex items-center gap-3 cursor-pointer"
+          onClick={() => navigate("/")}
+        >
           <svg
             className="h-8 w-8 text-primary"
             fill="none"
@@ -25,7 +31,7 @@ export default function Navbar({ onSignUp, onLogin }: NavbarProps) {
         <div className="hidden md:flex items-center gap-8">
           <a
             className="text-base font-medium hover:text-primary transition-colors cursor-pointer"
-            href="#explore"
+            onClick={() => navigate("/explore")}
           >
             Explorar
           </a>
