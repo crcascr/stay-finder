@@ -1,8 +1,12 @@
+import { useNavigate } from "react-router-dom";
+import type { Category } from "../../types/accommodation";
+
 interface Destination {
   id: number;
   title: string;
   description: string;
   imageUrl: string;
+  category: Category;
 }
 
 const destinations: Destination[] = [
@@ -12,6 +16,7 @@ const destinations: Destination[] = [
     description: "Cabañas y chalets acogedores",
     imageUrl:
       "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+    category: "mountain",
   },
   {
     id: 2,
@@ -19,6 +24,7 @@ const destinations: Destination[] = [
     description: "Villas con vista al océano",
     imageUrl:
       "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80",
+    category: "beach",
   },
   {
     id: 3,
@@ -26,10 +32,16 @@ const destinations: Destination[] = [
     description: "Vida urbana con estilo",
     imageUrl:
       "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=800&q=80",
+    category: "city",
   },
 ];
 
 export default function FeaturedDestinations() {
+  const navigate = useNavigate();
+
+  const handleDestinationClick = (category: Category) => {
+    navigate(`/explore?category=${category}`);
+  };
   return (
     <section className="py-16 sm:py-24 bg-background-light dark:bg-background-dark">
       <div className="container mx-auto px-6 lg:px-8">
@@ -42,6 +54,7 @@ export default function FeaturedDestinations() {
             <div
               key={destination.id}
               className="group overflow-hidden rounded-lg cursor-pointer"
+              onClick={() => handleDestinationClick(destination.category)}
             >
               <div
                 className="w-full h-64 bg-cover bg-center transform group-hover:scale-105 transition-transform duration-300"
