@@ -1,6 +1,6 @@
 import { Search, Star } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { mockAccommodations } from "../../data/mockAccommodations";
 import type { Accommodation } from "../../types/accommodation";
 
@@ -38,10 +38,6 @@ export default function HeroSection() {
     }
   }, [searchQuery]);
 
-  const handleInputBlur = () => {
-    setTimeout(() => setInputFocus(false), 200);
-  };
-
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -49,8 +45,13 @@ export default function HeroSection() {
     }
   };
 
-  const handleResultClick = (title: string) => {
-    navigate(`/explore?q=${encodeURIComponent(title.trim())}`);
+  const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+    if (
+      e.currentTarget &&
+      !e.currentTarget.contains(e.relatedTarget as Node | null)
+    ) {
+      setInputFocus(false);
+    }
   };
 
   return (
@@ -59,7 +60,7 @@ export default function HeroSection() {
       style={{ backgroundImage: `url("${heroImages[currentImageIndex]}")` }}
     >
       <div
-        className="absolute inset-0 bg-black/40 transition-opacity duration-500 ease-in-out"
+        className="absolute inset-0 bg-black/40 transition-opacity duration-300 ease-in-out"
         style={{ opacity: inputFocus ? 0.8 : 0.3 }}
       ></div>
 
@@ -71,7 +72,7 @@ export default function HeroSection() {
           Descubre alojamientos únicos y experiencias alrededor del mundo.
         </p>
 
-        <div className="max-w-2xl mx-auto relative">
+        <div className="max-w-2xl mx-auto relative" onBlur={handleBlur}>
           <form onSubmit={handleSearch}>
             <div
               className={`flex transition-all ease-in-out duration-300 items-center bg-surface-light dark:bg-surface-dark rounded-full shadow-lg p-2 border-2 border-border-light dark:border-border-dark ${
@@ -88,7 +89,6 @@ export default function HeroSection() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setInputFocus(true)}
-                onBlur={handleInputBlur}
               />
               <button
                 type="submit"
@@ -100,13 +100,13 @@ export default function HeroSection() {
           </form>
 
           {inputFocus && instantResults.length > 0 && (
-            <div className="absolute top-full mt-2 w-full bg-surface-light dark:bg-surface-dark rounded-2xl shadow-lg overflow-hidden text-left ">
+            <div className="absolute top-full mt-2 w-full bg-surface-light dark:bg-surface-dark rounded-2xl shadow-lg overflow-hidden text-left">
               <ul>
                 {instantResults.map((acc) => (
                   <li key={acc.id}>
-                    <div
-                      onClick={() => handleResultClick(acc.title)}
-                      className="flex items-center p-3 hover:bg-background-light dark:hover:bg-background-dark transition-colors cursor-pointer"
+                    <Link
+                      to={`/accommodation/${acc.id}`}
+                      className="flex items-center p-3 hover:bg-background-light dark:hover:bg-background-dark transition-colors"
                     >
                       <img
                         src={acc.images[0]}
@@ -128,7 +128,7 @@ export default function HeroSection() {
                         />
                         {acc.rating.toFixed(1)}
                       </div>
-                    </div>
+                    </Link>
                   </li>
                 ))}
               </ul>

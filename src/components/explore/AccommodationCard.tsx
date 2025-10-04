@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { MapPin, Users, Star } from "lucide-react";
 import type { Accommodation } from "../../types/accommodation";
 
@@ -9,8 +9,6 @@ interface AccommodationCardProps {
 export default function AccommodationCard({
   accommodation,
 }: AccommodationCardProps) {
-  const navigate = useNavigate();
-
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("es-CO", {
       style: "currency",
@@ -31,9 +29,9 @@ export default function AccommodationCard({
   };
 
   return (
-    <div
-      onClick={() => navigate(`/accommodation/${accommodation.id}`)}
-      className="bg-surface-light dark:bg-surface-dark rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer group"
+    <Link
+      to={`/accommodation/${accommodation.id}`}
+      className="block bg-surface-light dark:bg-surface-dark rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer group"
     >
       {/* Imagen */}
       <div className="relative h-64 overflow-hidden">
@@ -73,7 +71,7 @@ export default function AccommodationCard({
           <div className="flex items-center gap-1">
             <Star size={16} className="fill-yellow-400 text-yellow-400" />
             <span className="font-semibold">{accommodation.rating}</span>
-            <span className="text-text-secondary-light dark:text-text-secondary-dark text-sm">
+            <span className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
               ({accommodation.reviews_count})
             </span>
           </div>
@@ -89,6 +87,6 @@ export default function AccommodationCard({
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
