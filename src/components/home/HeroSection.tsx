@@ -1,7 +1,8 @@
-import { Search } from "lucide-react";
+import { Search, Star } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { mockAccommodations } from "../../data/mockAccommodations";
+import type { Accommodation } from "../../types/accommodation";
 
 const heroImages = mockAccommodations.slice(0, 5).map((acc) => acc.images[0]);
 
@@ -9,6 +10,7 @@ export default function HeroSection() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inputFocus, setInputFocus] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [instantResults, setInstantResults] = useState<Accommodation[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,10 +18,29 @@ export default function HeroSection() {
       setCurrentImageIndex((prevIndex) =>
         prevIndex === heroImages.length - 1 ? 0 : prevIndex + 1
       );
-    }, 5000); // Cambia la imagen cada 5 segundos
+    }, 5000);
 
-    return () => clearInterval(timer); // Limpia el intervalo al desmontar el componente
+    return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    if (searchQuery.trim().length > 1) {
+      const results = mockAccommodations
+        .filter(
+          (acc) =>
+            acc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            acc.location.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+        .slice(0, 5);
+      setInstantResults(results);
+    } else {
+      setInstantResults([]);
+    }
+  }, [searchQuery]);
+
+  const handleInputBlur = () => {
+    setTimeout(() => setInputFocus(false), 200);
+  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,14 +49,15 @@ export default function HeroSection() {
     }
   };
 
+  const handleResultClick = (title: string) => {
+    navigate(`/explore?q=${encodeURIComponent(title.trim())}`);
+  };
+
   return (
     <section
-      className="relative h-[600px] flex items-center justify-center bg-cover bg-center transition-all ease-in-out duration-2000"
-      style={{
-        backgroundImage: `url("${heroImages[currentImageIndex]}")`,
-      }}
+      className="relative h-[600px] flex items-center justify-center bg-cover bg-center transition-all ease-in-out duration-1000"
+      style={{ backgroundImage: `url("${heroImages[currentImageIndex]}")` }}
     >
-      {/* Capa de superposición para el efecto de atenuación */}
       <div
         className="absolute inset-0 bg-black/40 transition-opacity duration-500 ease-in-out"
         style={{ opacity: inputFocus ? 0.8 : 0.3 }}
@@ -49,7 +71,7 @@ export default function HeroSection() {
           Descubre alojamientos únicos y experiencias alrededor del mundo.
         </p>
 
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-2xl mx-auto relative">
           <form onSubmit={handleSearch}>
             <div
               className={`flex transition-all ease-in-out duration-300 items-center bg-surface-light dark:bg-surface-dark rounded-full shadow-lg p-2 border-2 border-border-light dark:border-border-dark ${
@@ -66,7 +88,7 @@ export default function HeroSection() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setInputFocus(true)}
-                onBlur={() => setInputFocus(false)}
+                onBlur={handleInputBlur}
               />
               <button
                 type="submit"
@@ -76,6 +98,42 @@ export default function HeroSection() {
               </button>
             </div>
           </form>
+
+          {inputFocus && instantResults.length > 0 && (
+            <div className="absolute top-full mt-2 w-full bg-surface-light dark:bg-surface-dark rounded-2xl shadow-lg overflow-hidden text-left ">
+              <ul>
+                {instantResults.map((acc) => (
+                  <li key={acc.id}>
+                    <div
+                      onClick={() => handleResultClick(acc.title)}
+                      className="flex items-center p-3 hover:bg-background-light dark:hover:bg-background-dark transition-colors cursor-pointer"
+                    >
+                      <img
+                        src={acc.images[0]}
+                        alt={acc.title}
+                        className="w-20 h-16 object-cover rounded-lg"
+                      />
+                      <div className="ml-4 flex-grow">
+                        <p className="font-semibold text-text-primary-light dark:text-text-primary-dark">
+                          {acc.title}
+                        </p>
+                        <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                          {acc.location}
+                        </p>
+                      </div>
+                      <div className="ml-4 flex items-center font-bold text-text-primary-light dark:text-text-primary-dark">
+                        <Star
+                          size={16}
+                          className="mr-1 text-yellow-400 fill-current"
+                        />
+                        {acc.rating.toFixed(1)}
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </section>
