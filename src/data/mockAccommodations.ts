@@ -30,6 +30,7 @@ export const mockAccommodations: Accommodation[] = [
     reviews_count: 42,
     is_available: true,
     created_at: "2024-01-15T10:00:00Z",
+    unavailable_dates: ["2024-10-20", "2024-10-21", "2024-11-15"],
   },
   {
     id: "2",
@@ -61,6 +62,7 @@ export const mockAccommodations: Accommodation[] = [
     reviews_count: 87,
     is_available: true,
     created_at: "2024-01-10T14:30:00Z",
+    unavailable_dates: ["2024-11-05", "2024-11-06", "2024-11-07"],
   },
   {
     id: "3",
@@ -91,6 +93,7 @@ export const mockAccommodations: Accommodation[] = [
     reviews_count: 56,
     is_available: true,
     created_at: "2024-02-01T09:15:00Z",
+    unavailable_dates: ["2024-10-15", "2024-10-16", "2024-10-17"],
   },
   {
     id: "4",
@@ -122,6 +125,7 @@ export const mockAccommodations: Accommodation[] = [
     reviews_count: 34,
     is_available: true,
     created_at: "2024-01-20T11:00:00Z",
+    unavailable_dates: ["2025-10-05", "2025-10-06", "2025-10-07"],
   },
   {
     id: "5",
@@ -153,6 +157,7 @@ export const mockAccommodations: Accommodation[] = [
     reviews_count: 93,
     is_available: true,
     created_at: "2024-01-05T16:45:00Z",
+    unavailable_dates: ["2024-10-10", "2024-10-11", "2024-10-12"],
   },
   {
     id: "6",
@@ -184,6 +189,7 @@ export const mockAccommodations: Accommodation[] = [
     reviews_count: 67,
     is_available: true,
     created_at: "2024-02-10T08:30:00Z",
+    unavailable_dates: [],
   },
   {
     id: "7",
@@ -215,6 +221,7 @@ export const mockAccommodations: Accommodation[] = [
     reviews_count: 51,
     is_available: true,
     created_at: "2024-01-25T13:20:00Z",
+    unavailable_dates: ["2024-10-25", "2024-10-26", "2024-10-27"],
   },
   {
     id: "8",
@@ -245,6 +252,7 @@ export const mockAccommodations: Accommodation[] = [
     reviews_count: 38,
     is_available: true,
     created_at: "2024-02-05T10:00:00Z",
+    unavailable_dates: [],
   },
 ];
 

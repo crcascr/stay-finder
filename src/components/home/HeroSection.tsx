@@ -79,7 +79,7 @@ export default function HeroSection() {
                 inputFocus ? "border-primary" : ""
               }`}
             >
-              <div className="pl-4 pr-2 text-text-secondary-light dark:text-text-secondary-dark">
+              <div className="pl-4 pr-2 text-text-secondary-light dark:text-text-secondary-dark hidden md:block">
                 <Search size={24} />
               </div>
               <input
@@ -92,9 +92,10 @@ export default function HeroSection() {
               />
               <button
                 type="submit"
-                className="px-6 py-3 rounded-full text-base font-semibold bg-primary text-white hover:bg-primary/90 transition-colors shrink-0"
+                className=" px-3 md:px-6 py-3 rounded-full text-base font-semibold bg-primary text-white hover:bg-primary/90 transition-colors shrink-0"
               >
-                Buscar
+                <span className="hidden md:block">Buscar</span>
+                <Search className="block md:hidden" size={20} />
               </button>
             </div>
           </form>

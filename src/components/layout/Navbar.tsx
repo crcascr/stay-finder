@@ -21,7 +21,7 @@ export default function Navbar({ onSignUp, onLogin }: NavbarProps) {
               fill="currentColor"
             ></path>
           </svg>
-          <h2 className="text-xl font-bold">StayFinder</h2>
+          <h2 className="text-xl font-bold hidden md:block">StayFinder</h2>
         </Link>
 
         <div className="hidden md:flex items-center gap-8">
