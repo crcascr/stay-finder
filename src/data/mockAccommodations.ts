@@ -1,4 +1,4 @@
-import type { Accommodation } from "../types/accommodation";
+import type { Accommodation } from "@/types/accommodation";
 
 export const mockAccommodations: Accommodation[] = [
   {

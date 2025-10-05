@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Navbar from "../components/layout/Navbar";
-import Footer from "../components/layout/Footer";
-import { mockAccommodations } from "../data/mockAccommodations";
-import type { Accommodation } from "../types/accommodation";
-import { amenityIcons } from "../utils/AmenityIcons";
-import { Bath, Bed, MapPin, Star, Users } from "lucide-react";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import { mockAccommodations } from "@/data/mockAccommodations";
+import type { Accommodation } from "@/types/accommodation";
+import { Star, Users, Bed, Bath, MapPin } from "lucide-react";
+import { AmenityIcons } from "@/utils/AmenityIcons";
 
 export default function AccommodationDetail() {
   const { id } = useParams<{ id: string }>();
@@ -130,7 +130,7 @@ export default function AccommodationDetail() {
               <ul className="grid grid-cols-2 gap-4">
                 {amenities.map((amenity) => (
                   <li key={amenity} className="flex items-center gap-3">
-                    {amenityIcons[amenity] || <Star size={20} />}
+                    {AmenityIcons[amenity] || <Star size={20} />}
                     <span>{amenity}</span>
                   </li>
                 ))}

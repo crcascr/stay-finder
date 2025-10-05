@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { MapPin, Users, Star } from "lucide-react";
-import type { Accommodation } from "../../types/accommodation";
+import type { Accommodation } from "@/types/accommodation";
 
 interface AccommodationCardProps {
   accommodation: Accommodation;

@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import Navbar from "../components/layout/Navbar";
-import Footer from "../components/layout/Footer";
-import SearchBar from "../components/explore/SearchBar";
-import FilterPanel from "../components/explore/FilterPanel";
-import AccommodationCard from "../components/explore/AccommodationCard";
-import { searchAccommodations } from "../data/mockAccommodations";
 import { SlidersHorizontal } from "lucide-react";
 import type {
   Accommodation,
   Category,
   PropertyType,
-} from "../types/accommodation";
+} from "@/types/accommodation";
+import { searchAccommodations } from "@/data/mockAccommodations";
+import Navbar from "@/components/layout/Navbar";
+import SearchBar from "@/components/explore/SearchBar";
+import FilterPanel from "@/components/explore/FilterPanel";
+import AccommodationCard from "@/components/explore/AccommodationCard";
+import Footer from "@/components/layout/Footer";
 
 export default function Explore() {
   const [searchParams, setSearchParams] = useSearchParams();

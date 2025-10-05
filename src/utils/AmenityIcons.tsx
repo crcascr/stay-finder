@@ -22,7 +22,7 @@ import {
   Sailboat,
 } from "lucide-react";
 
-export const amenityIcons: Record<string, ReactNode> = {
+export const AmenityIcons: Record<string, ReactNode> = {
   WiFi: <Wifi size={20} />,
   "Aire acondicionado": <Wind size={20} />,
   Chimenea: <Flame size={20} />,

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import type { Category } from "../../types/accommodation";
+import type { Category } from "@/types/accommodation";
 
 interface Destination {
   id: number;
