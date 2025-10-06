@@ -12,12 +12,12 @@ export default function SearchBar({
   placeholder = "Buscar...",
 }: SearchBarProps) {
   return (
-    <div className="flex items-center bg-surface-light dark:bg-surface-dark rounded-lg shadow-md p-2 border border-border-light dark:border-border-dark">
-      <div className="pl-3 pr-2 text-text-secondary-light dark:text-text-secondary-dark">
+    <div className="bg-surface-light dark:bg-surface-dark border-border-light dark:border-border-dark flex items-center rounded-lg border p-2 shadow-md">
+      <div className="text-text-secondary-light dark:text-text-secondary-dark pr-2 pl-3">
         <Search size={20} />
       </div>
       <input
-        className="flex-grow bg-transparent text-text-primary-light dark:text-text-primary-dark placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark focus:outline-none px-2 py-2"
+        className="text-text-primary-light dark:text-text-primary-dark placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark flex-grow bg-transparent px-2 py-2 focus:outline-none"
         placeholder={placeholder}
         type="text"
         value={value}

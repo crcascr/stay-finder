@@ -26,18 +26,18 @@ export default function Explore() {
   const [minPrice, setMinPrice] = useState<number | undefined>(
     searchParams.get("minPrice")
       ? Number(searchParams.get("minPrice"))
-      : undefined
+      : undefined,
   );
   const [maxPrice, setMaxPrice] = useState<number | undefined>(
     searchParams.get("maxPrice")
       ? Number(searchParams.get("maxPrice"))
-      : undefined
+      : undefined,
   );
   const [guests, setGuests] = useState<number | undefined>(
-    searchParams.get("guests") ? Number(searchParams.get("guests")) : undefined
+    searchParams.get("guests") ? Number(searchParams.get("guests")) : undefined,
   );
   const [propertyType, setPropertyType] = useState<PropertyType | undefined>(
-    (searchParams.get("propertyType") as PropertyType) || undefined
+    (searchParams.get("propertyType") as PropertyType) || undefined,
   );
 
   // Buscar acomodaciones cuando cambien los filtros
@@ -74,11 +74,11 @@ export default function Explore() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
 
-      <main className="flex-grow bg-background-light dark:bg-background-dark">
-        <div className="container mx-auto px-6 lg:px-8 py-8">
+      <main className="bg-background-light dark:bg-background-dark flex-grow">
+        <div className="container mx-auto px-6 py-8 lg:px-8">
           {/* Barra de búsqueda principal */}
           <div className="mb-6">
             <SearchBar
@@ -90,7 +90,7 @@ export default function Explore() {
 
           <div className="flex gap-8">
             {/* Panel de filtros - Desktop */}
-            <aside className="hidden lg:block w-80 flex-shrink-0">
+            <aside className="hidden w-80 flex-shrink-0 lg:block">
               <div className="sticky top-24">
                 <FilterPanel
                   selectedCategory={selectedCategory}
@@ -111,17 +111,17 @@ export default function Explore() {
             {/* Resultados */}
             <div className="flex-grow">
               {/* Botón de filtros móvil */}
-              <div className="lg:hidden mb-4">
+              <div className="mb-4 lg:hidden">
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-surface-light dark:bg-surface-dark rounded-lg border border-border-light dark:border-border-dark"
+                  className="bg-surface-light dark:bg-surface-dark border-border-light dark:border-border-dark flex w-full items-center justify-center gap-2 rounded-lg border px-4 py-3"
                 >
                   <SlidersHorizontal size={20} />
                   <span>Filtros</span>
                 </button>
 
                 {showFilters && (
-                  <div className="mt-4 p-4 bg-surface-light dark:bg-surface-dark rounded-lg">
+                  <div className="bg-surface-light dark:bg-surface-dark mt-4 rounded-lg p-4">
                     <FilterPanel
                       selectedCategory={selectedCategory}
                       onCategoryChange={setSelectedCategory}
@@ -150,7 +150,7 @@ export default function Explore() {
 
               {/* Grid de resultados */}
               {accommodations.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
                   {accommodations.map((accommodation) => (
                     <AccommodationCard
                       key={accommodation.id}
@@ -159,13 +159,13 @@ export default function Explore() {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-12">
-                  <p className="text-xl text-text-secondary-light dark:text-text-secondary-dark">
+                <div className="py-12 text-center">
+                  <p className="text-text-secondary-light dark:text-text-secondary-dark text-xl">
                     No se encontraron alojamientos con los filtros seleccionados
                   </p>
                   <button
                     onClick={handleClearFilters}
-                    className="mt-4 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+                    className="bg-primary hover:bg-primary/90 mt-4 rounded-lg px-6 py-2 text-white transition-colors"
                   >
                     Limpiar filtros
                   </button>

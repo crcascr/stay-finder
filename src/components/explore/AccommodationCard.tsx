@@ -31,32 +31,32 @@ export default function AccommodationCard({
   return (
     <Link
       to={`/accommodation/${accommodation.id}`}
-      className="block bg-surface-light dark:bg-surface-dark rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer group"
+      className="bg-surface-light dark:bg-surface-dark group block cursor-pointer overflow-hidden rounded-lg shadow-md transition-shadow hover:shadow-xl"
     >
       {/* Imagen */}
       <div className="relative h-64 overflow-hidden">
         <img
           src={accommodation.images[0]}
           alt={accommodation.title}
-          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
+          className="h-full w-full transform object-cover transition-transform duration-300 group-hover:scale-110"
         />
-        <div className="absolute top-3 right-3 bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold">
+        <div className="bg-primary absolute top-3 right-3 rounded-full px-3 py-1 text-sm font-semibold text-white">
           {getCategoryLabel(accommodation.category)}
         </div>
       </div>
 
       {/* Contenido */}
       <div className="p-4">
-        <h3 className="text-lg font-bold mb-2 line-clamp-1">
+        <h3 className="mb-2 line-clamp-1 text-lg font-bold">
           {accommodation.title}
         </h3>
 
-        <div className="flex items-center gap-1 text-text-secondary-light dark:text-text-secondary-dark mb-2">
+        <div className="text-text-secondary-light dark:text-text-secondary-dark mb-2 flex items-center gap-1">
           <MapPin size={16} />
           <span className="text-sm">{accommodation.location}</span>
         </div>
 
-        <div className="flex items-center gap-4 text-sm text-text-secondary-light dark:text-text-secondary-dark mb-3">
+        <div className="text-text-secondary-light dark:text-text-secondary-dark mb-3 flex items-center gap-4 text-sm">
           <div className="flex items-center gap-1">
             <Users size={16} />
             <span>{accommodation.max_guests} huéspedes</span>
@@ -71,16 +71,16 @@ export default function AccommodationCard({
           <div className="flex items-center gap-1">
             <Star size={16} className="fill-yellow-400 text-yellow-400" />
             <span className="font-semibold">{accommodation.rating}</span>
-            <span className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+            <span className="text-text-secondary-light dark:text-text-secondary-dark text-sm">
               ({accommodation.reviews_count})
             </span>
           </div>
 
           <div className="text-right">
-            <span className="text-2xl font-bold text-primary">
+            <span className="text-primary text-2xl font-bold">
               {formatPrice(accommodation.price_per_night)}
             </span>
-            <span className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+            <span className="text-text-secondary-light dark:text-text-secondary-dark text-sm">
               {" "}
               /noche
             </span>

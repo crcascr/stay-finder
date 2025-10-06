@@ -6,23 +6,14 @@ import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 
 export default function Home() {
-  const handleSignUp = () => {
-    console.log("Ir a registro");
-    // Aquí navegarás a la página de registro
-  };
-
-  const handleLogin = () => {
-    console.log("Ir a login");
-    // Aquí navegarás a la página de login
-  };
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar onSignUp={handleSignUp} onLogin={handleLogin} />
+    <div className="flex min-h-screen flex-col">
+      <Navbar />
       <main className="flex-grow">
         <HeroSection />
         <FeaturedDestinations />
         <FeaturesSection />
-        <CTASection onGetStarted={handleSignUp} />
+        <CTASection />
       </main>
       <Footer />
     </div>

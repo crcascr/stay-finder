@@ -45,12 +45,12 @@ export default function FilterPanel({
   onClearFilters,
 }: FilterPanelProps) {
   return (
-    <div className="bg-surface-light dark:bg-surface-dark rounded-lg p-6 border border-border-light dark:border-border-dark">
-      <div className="flex items-center justify-between mb-6">
+    <div className="bg-surface-light dark:bg-surface-dark border-border-light dark:border-border-dark rounded-lg border p-6">
+      <div className="mb-6 flex items-center justify-between">
         <h3 className="text-xl font-bold">Filtros</h3>
         <button
           onClick={onClearFilters}
-          className="text-sm text-primary hover:text-primary/80 flex items-center gap-1"
+          className="text-primary hover:text-primary/80 flex items-center gap-1 text-sm"
         >
           <X size={16} />
           Limpiar
@@ -59,17 +59,17 @@ export default function FilterPanel({
 
       {/* Categoría */}
       <div className="mb-6">
-        <label className="block text-sm font-semibold mb-3">Categoría</label>
+        <label className="mb-3 block text-sm font-semibold">Categoría</label>
         <div className="space-y-2">
           {categories.map((cat) => (
             <button
               key={cat.value}
               onClick={() =>
                 onCategoryChange(
-                  selectedCategory === cat.value ? undefined : cat.value
+                  selectedCategory === cat.value ? undefined : cat.value,
                 )
               }
-              className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
+              className={`w-full rounded-lg px-4 py-2 text-left transition-colors ${
                 selectedCategory === cat.value
                   ? "bg-primary text-white"
                   : "bg-background-light dark:bg-background-dark hover:bg-primary/10"
@@ -83,7 +83,7 @@ export default function FilterPanel({
 
       {/* Tipo de propiedad */}
       <div className="mb-6">
-        <label className="block text-sm font-semibold mb-3">
+        <label className="mb-3 block text-sm font-semibold">
           Tipo de propiedad
         </label>
         <select
@@ -91,7 +91,7 @@ export default function FilterPanel({
           onChange={(e) =>
             onPropertyTypeChange((e.target.value as PropertyType) || undefined)
           }
-          className="w-full px-4 py-2 rounded-lg bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark focus:outline-none focus:ring-2 focus:ring-primary"
+          className="bg-background-light dark:bg-background-dark border-border-light dark:border-border-dark focus:ring-primary w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
         >
           <option value="">Todos</option>
           {propertyTypes.map((type) => (
@@ -104,12 +104,12 @@ export default function FilterPanel({
 
       {/* Rango de precio */}
       <div className="mb-6">
-        <label className="block text-sm font-semibold mb-3">
+        <label className="mb-3 block text-sm font-semibold">
           Precio por noche
         </label>
         <div className="space-y-3">
           <div>
-            <label className="block text-xs text-text-secondary-light dark:text-text-secondary-dark mb-1">
+            <label className="text-text-secondary-light dark:text-text-secondary-dark mb-1 block text-xs">
               Mínimo (COP)
             </label>
             <input
@@ -117,15 +117,15 @@ export default function FilterPanel({
               value={minPrice || ""}
               onChange={(e) =>
                 onMinPriceChange(
-                  e.target.value ? Number(e.target.value) : undefined
+                  e.target.value ? Number(e.target.value) : undefined,
                 )
               }
               placeholder="0"
-              className="w-full px-4 py-2 rounded-lg bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark focus:outline-none focus:ring-2 focus:ring-primary"
+              className="bg-background-light dark:bg-background-dark border-border-light dark:border-border-dark focus:ring-primary w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
             />
           </div>
           <div>
-            <label className="block text-xs text-text-secondary-light dark:text-text-secondary-dark mb-1">
+            <label className="text-text-secondary-light dark:text-text-secondary-dark mb-1 block text-xs">
               Máximo (COP)
             </label>
             <input
@@ -133,11 +133,11 @@ export default function FilterPanel({
               value={maxPrice || ""}
               onChange={(e) =>
                 onMaxPriceChange(
-                  e.target.value ? Number(e.target.value) : undefined
+                  e.target.value ? Number(e.target.value) : undefined,
                 )
               }
               placeholder="1000000"
-              className="w-full px-4 py-2 rounded-lg bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark focus:outline-none focus:ring-2 focus:ring-primary"
+              className="bg-background-light dark:bg-background-dark border-border-light dark:border-border-dark focus:ring-primary w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
             />
           </div>
         </div>
@@ -145,7 +145,7 @@ export default function FilterPanel({
 
       {/* Huéspedes */}
       <div className="mb-6">
-        <label className="block text-sm font-semibold mb-3">Huéspedes</label>
+        <label className="mb-3 block text-sm font-semibold">Huéspedes</label>
         <input
           type="number"
           min="1"
@@ -154,7 +154,7 @@ export default function FilterPanel({
             onGuestsChange(e.target.value ? Number(e.target.value) : undefined)
           }
           placeholder="Cualquiera"
-          className="w-full px-4 py-2 rounded-lg bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark focus:outline-none focus:ring-2 focus:ring-primary"
+          className="bg-background-light dark:bg-background-dark border-border-light dark:border-border-dark focus:ring-primary w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
         />
       </div>
     </div>

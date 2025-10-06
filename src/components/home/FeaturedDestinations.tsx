@@ -43,24 +43,24 @@ export default function FeaturedDestinations() {
     navigate(`/explore?category=${category}`);
   };
   return (
-    <section className="py-16 sm:py-24 bg-background-light dark:bg-background-dark">
+    <section className="bg-background-light dark:bg-background-dark py-16 sm:py-24">
       <div className="container mx-auto px-6 lg:px-8">
-        <h2 className="text-3xl font-bold text-center mb-12">
+        <h2 className="mb-12 text-center text-3xl font-bold">
           Destinos destacados
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {destinations.map((destination) => (
             <div
               key={destination.id}
-              className="group overflow-hidden rounded-lg cursor-pointer"
+              className="group cursor-pointer overflow-hidden rounded-lg"
               onClick={() => handleDestinationClick(destination.category)}
             >
               <div
-                className="w-full h-64 bg-cover bg-center transform group-hover:scale-105 transition-transform duration-300"
+                className="h-64 w-full transform bg-cover bg-center transition-transform duration-300 group-hover:scale-105"
                 style={{ backgroundImage: `url("${destination.imageUrl}")` }}
               />
-              <div className="p-4 bg-surface-light dark:bg-surface-dark">
+              <div className="bg-surface-light dark:bg-surface-dark p-4">
                 <h3 className="text-lg font-semibold">{destination.title}</h3>
                 <p className="text-text-secondary-light dark:text-text-secondary-dark">
                   {destination.description}

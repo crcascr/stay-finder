@@ -16,7 +16,7 @@ export default function HeroSection() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentImageIndex((prevIndex) =>
-        prevIndex === heroImages.length - 1 ? 0 : prevIndex + 1
+        prevIndex === heroImages.length - 1 ? 0 : prevIndex + 1,
       );
     }, 5000);
 
@@ -29,7 +29,7 @@ export default function HeroSection() {
         .filter(
           (acc) =>
             acc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            acc.location.toLowerCase().includes(searchQuery.toLowerCase())
+            acc.location.toLowerCase().includes(searchQuery.toLowerCase()),
         )
         .slice(0, 5);
       setInstantResults(results);
@@ -56,7 +56,7 @@ export default function HeroSection() {
 
   return (
     <section
-      className="relative h-[600px] flex items-center justify-center bg-cover bg-center transition-all ease-in-out duration-1000"
+      className="relative flex h-[600px] items-center justify-center bg-cover bg-center transition-all duration-1000 ease-in-out"
       style={{ backgroundImage: `url("${heroImages[currentImageIndex]}")` }}
     >
       <div
@@ -64,26 +64,26 @@ export default function HeroSection() {
         style={{ opacity: inputFocus ? 0.8 : 0.3 }}
       ></div>
 
-      <div className="relative z-10 container mx-auto px-6 lg:px-8 text-center text-white">
-        <h1 className="text-4xl md:text-6xl font-black leading-tight tracking-tighter text-shadow-hero mb-4">
+      <div className="relative z-10 container mx-auto px-6 text-center text-white lg:px-8">
+        <h1 className="text-shadow-hero mb-4 text-4xl leading-tight font-black tracking-tighter md:text-6xl">
           Encuentra tu escapada perfecta
         </h1>
-        <p className="text-lg md:text-xl font-light max-w-2xl mx-auto text-shadow-hero mb-8">
+        <p className="text-shadow-hero mx-auto mb-8 max-w-2xl text-lg font-light md:text-xl">
           Descubre alojamientos únicos y experiencias alrededor del mundo.
         </p>
 
-        <div className="max-w-2xl mx-auto relative" onBlur={handleBlur}>
+        <div className="relative mx-auto max-w-2xl" onBlur={handleBlur}>
           <form onSubmit={handleSearch}>
             <div
-              className={`flex transition-all ease-in-out duration-300 items-center bg-surface-light dark:bg-surface-dark rounded-full shadow-lg p-2 border-2 border-border-light dark:border-border-dark ${
+              className={`bg-surface-light dark:bg-surface-dark border-border-light dark:border-border-dark flex items-center rounded-full border-2 p-2 shadow-lg transition-all duration-300 ease-in-out ${
                 inputFocus ? "border-primary" : ""
               }`}
             >
-              <div className="pl-4 pr-2 text-text-secondary-light dark:text-text-secondary-dark hidden md:block">
+              <div className="text-text-secondary-light dark:text-text-secondary-dark hidden pr-2 pl-4 md:block">
                 <Search size={24} />
               </div>
               <input
-                className="flex-grow bg-transparent text-text-primary-light dark:text-text-primary-dark placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark focus:outline-none px-2 text-lg"
+                className="text-text-primary-light dark:text-text-primary-dark placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark flex-grow bg-transparent px-2 text-lg focus:outline-none"
                 placeholder="¿A dónde vas?"
                 type="text"
                 value={searchQuery}
@@ -92,7 +92,7 @@ export default function HeroSection() {
               />
               <button
                 type="submit"
-                className=" px-3 md:px-6 py-3 rounded-full text-base font-semibold bg-primary text-white hover:bg-primary/90 transition-colors shrink-0"
+                className="bg-primary hover:bg-primary/90 shrink-0 rounded-full px-3 py-3 text-base font-semibold text-white transition-colors md:px-6"
               >
                 <span className="hidden md:block">Buscar</span>
                 <Search className="block md:hidden" size={20} />
@@ -101,31 +101,31 @@ export default function HeroSection() {
           </form>
 
           {inputFocus && instantResults.length > 0 && (
-            <div className="absolute top-full mt-2 w-full bg-surface-light dark:bg-surface-dark rounded-2xl shadow-lg overflow-hidden text-left">
+            <div className="bg-surface-light dark:bg-surface-dark absolute top-full mt-2 w-full overflow-hidden rounded-2xl text-left shadow-lg">
               <ul>
                 {instantResults.map((acc) => (
                   <li key={acc.id}>
                     <Link
                       to={`/accommodation/${acc.id}`}
-                      className="flex items-center p-3 hover:bg-background-light dark:hover:bg-background-dark transition-colors"
+                      className="hover:bg-background-light dark:hover:bg-background-dark flex items-center p-3 transition-colors"
                     >
                       <img
                         src={acc.images[0]}
                         alt={acc.title}
-                        className="w-20 h-16 object-cover rounded-lg"
+                        className="h-16 w-20 rounded-lg object-cover"
                       />
                       <div className="ml-4 flex-grow">
-                        <p className="font-semibold text-text-primary-light dark:text-text-primary-dark">
+                        <p className="text-text-primary-light dark:text-text-primary-dark font-semibold">
                           {acc.title}
                         </p>
-                        <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                        <p className="text-text-secondary-light dark:text-text-secondary-dark text-sm">
                           {acc.location}
                         </p>
                       </div>
-                      <div className="ml-4 flex items-center font-bold text-text-primary-light dark:text-text-primary-dark">
+                      <div className="text-text-primary-light dark:text-text-primary-dark ml-4 flex items-center font-bold">
                         <Star
                           size={16}
-                          className="mr-1 text-yellow-400 fill-current"
+                          className="mr-1 fill-current text-yellow-400"
                         />
                         {acc.rating.toFixed(1)}
                       </div>

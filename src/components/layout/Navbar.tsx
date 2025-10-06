@@ -1,17 +1,12 @@
 import { Link } from "react-router-dom";
 
-interface NavbarProps {
-  onSignUp?: () => void;
-  onLogin?: () => void;
-}
-
-export default function Navbar({ onSignUp, onLogin }: NavbarProps) {
+export default function Navbar() {
   return (
-    <header className="sticky top-0 z-50 bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-sm border-b border-border-light dark:border-border-dark">
-      <nav className="container mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
-        <Link className="flex items-center gap-3 cursor-pointer" to="/">
+    <header className="bg-surface-light/80 dark:bg-surface-dark/80 border-border-light dark:border-border-dark sticky top-0 z-50 border-b backdrop-blur-sm">
+      <nav className="container mx-auto flex items-center justify-between px-6 py-4 lg:px-8">
+        <Link className="flex cursor-pointer items-center gap-3" to="/">
           <svg
-            className="h-8 w-8 text-primary"
+            className="text-primary h-8 w-8"
             fill="none"
             viewBox="0 0 48 48"
             xmlns="http://www.w3.org/2000/svg"
@@ -21,19 +16,19 @@ export default function Navbar({ onSignUp, onLogin }: NavbarProps) {
               fill="currentColor"
             ></path>
           </svg>
-          <h2 className="text-xl font-bold hidden md:block">StayFinder</h2>
+          <h2 className="hidden text-xl font-bold md:block">StayFinder</h2>
         </Link>
 
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden items-center gap-8 md:flex">
           <Link
             to="/explore"
-            className="text-base font-medium hover:text-primary transition-colors cursor-pointer"
+            className="hover:text-primary cursor-pointer text-base font-medium transition-colors"
           >
             Explorar
           </Link>
 
           <a
-            className="text-base font-medium hover:text-primary transition-colors cursor-pointer"
+            className="hover:text-primary cursor-pointer text-base font-medium transition-colors"
             href="#support"
           >
             Soporte
@@ -41,18 +36,18 @@ export default function Navbar({ onSignUp, onLogin }: NavbarProps) {
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            onClick={onSignUp}
-            className="px-4 py-2 rounded-lg text-sm font-semibold bg-primary text-white hover:bg-primary/90 transition-colors"
+          <Link
+            to="/register"
+            className="bg-primary hover:bg-primary/90 rounded-lg px-4 py-2 text-sm font-semibold text-white transition-colors"
           >
             Registrarse
-          </button>
-          <button
-            onClick={onLogin}
-            className="px-4 py-2 rounded-lg text-sm font-semibold bg-primary/10 text-primary hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 transition-colors"
+          </Link>
+          <Link
+            to="/login"
+            className="bg-primary/10 text-primary hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 rounded-lg px-4 py-2 text-sm font-semibold transition-colors"
           >
             Iniciar sesión
-          </button>
+          </Link>
         </div>
       </nav>
     </header>

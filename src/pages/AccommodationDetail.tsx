@@ -14,7 +14,7 @@ import { AmenityIcons } from "@/utils/AmenityIcons";
 export default function AccommodationDetail() {
   const { id } = useParams<{ id: string }>();
   const [accommodation, setAccommodation] = useState<Accommodation | null>(
-    null
+    null,
   );
 
   useEffect(() => {
@@ -84,15 +84,15 @@ export default function AccommodationDetail() {
     setIsAvailable(isRangeAvailable);
     setDaysNumber(
       (dateRange.to.getTime() - dateRange.from.getTime()) /
-        (1000 * 60 * 60 * 24)
+        (1000 * 60 * 60 * 24),
     );
   }, [dateRange, accommodation]);
 
   if (!accommodation) {
     return (
-      <div className="flex flex-col min-h-screen">
+      <div className="flex min-h-screen flex-col">
         <Navbar />
-        <main className="flex-grow flex items-center justify-center">
+        <main className="flex flex-grow items-center justify-center">
           <p>Alojamiento no encontrado.</p>
         </main>
         <Footer />
@@ -115,72 +115,72 @@ export default function AccommodationDetail() {
   } = accommodation;
 
   return (
-    <div className="flex flex-col min-h-screen bg-background-light dark:bg-background-dark">
+    <div className="bg-background-light dark:bg-background-dark flex min-h-screen flex-col">
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 lg:px-8 py-8">
+      <main className="container mx-auto flex-grow px-4 py-8 lg:px-8">
         {/* Encabezado con título y ubicación */}
         <div className="mb-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-text-primary-light dark:text-text-primary-dark">
+          <h1 className="text-text-primary-light dark:text-text-primary-dark text-3xl font-bold md:text-4xl">
             {title}
           </h1>
-          <div className="flex items-center gap-2 text-text-secondary-light dark:text-text-secondary-dark mt-2">
+          <div className="text-text-secondary-light dark:text-text-secondary-dark mt-2 flex items-center gap-2">
             <MapPin size={16} />
             <span>{location}</span>
           </div>
         </div>
 
         {/* Galería de Imágenes */}
-        <div className="grid grid-cols-1 md:grid-cols-2 md:grid-rows-2 gap-2 h-[500px] mb-8">
+        <div className="mb-8 grid h-[500px] grid-cols-1 gap-2 md:grid-cols-2 md:grid-rows-2">
           <div className="md:col-span-1 md:row-span-2">
             <img
               src={images[0]}
               alt={title}
-              className="w-full h-full object-cover rounded-lg"
+              className="h-full w-full rounded-lg object-cover"
             />
           </div>
           <div className="hidden md:block">
             <img
               src={images[1] || images[0]}
               alt={title}
-              className="w-full h-full object-cover rounded-lg"
+              className="h-full w-full rounded-lg object-cover"
             />
           </div>
           <div className="hidden md:block">
             <img
               src={images[2] || images[0]}
               alt={title}
-              className="w-full h-full object-cover rounded-lg"
+              className="h-full w-full rounded-lg object-cover"
             />
           </div>
         </div>
 
         {/* Contenido Principal y Panel de Reserva */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {/* Columna de Información */}
           <div className="lg:col-span-2">
-            <div className="border-b border-border-light dark:border-border-dark pb-4">
+            <div className="border-border-light dark:border-border-dark border-b pb-4">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-2xl font-semibold">
                     Alojamiento completo
                   </h2>
-                  <div className="flex gap-4 text-text-secondary-light dark:text-text-secondary-dark mt-1">
+                  <div className="text-text-secondary-light dark:text-text-secondary-dark mt-1 flex gap-4">
                     <span>
-                      <Users className="inline mr-2" />
+                      <Users className="mr-2 inline" />
                       {max_guests} huéspedes
                     </span>
                     <span>
-                      <Bed className="inline mr-2" />
+                      <Bed className="mr-2 inline" />
                       {bedrooms} dormitorios
                     </span>
                     <span>
-                      <Bath className="inline mr-2" />
+                      <Bath className="mr-2 inline" />
                       {bathrooms} baños
                     </span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 font-bold">
-                  <Star size={20} className="text-yellow-400 fill-current" />
+                  <Star size={20} className="fill-current text-yellow-400" />
                   <span>
                     {rating.toFixed(1)} ({reviews_count} reseñas)
                   </span>
@@ -188,15 +188,15 @@ export default function AccommodationDetail() {
               </div>
             </div>
 
-            <div className="py-6 border-b border-border-light dark:border-border-dark">
-              <h3 className="text-xl font-semibold mb-2">Descripción</h3>
+            <div className="border-border-light dark:border-border-dark border-b py-6">
+              <h3 className="mb-2 text-xl font-semibold">Descripción</h3>
               <p className="text-text-secondary-light dark:text-text-secondary-dark whitespace-pre-line">
                 {description}
               </p>
             </div>
 
             <div className="py-6">
-              <h3 className="text-xl font-semibold mb-4">Comodidades</h3>
+              <h3 className="mb-4 text-xl font-semibold">Comodidades</h3>
               <ul className="grid grid-cols-2 gap-4">
                 {amenities.map((amenity) => (
                   <li key={amenity} className="flex items-center gap-3">
@@ -209,8 +209,8 @@ export default function AccommodationDetail() {
 
             {/* Selector de fechas */}
             <div className="py-6">
-              <h3 className="text-xl font-semibold mb-4">Disponibilidad</h3>
-              <div className="flex items-center justify-center border rounded-lg bg-white dark:bg-surface-dark p-6">
+              <h3 className="mb-4 text-xl font-semibold">Disponibilidad</h3>
+              <div className="dark:bg-surface-dark flex items-center justify-center rounded-lg border bg-white p-6">
                 <DayPicker
                   mode="range"
                   selected={dateRange}
@@ -222,7 +222,7 @@ export default function AccommodationDetail() {
                   footer={
                     dateRange?.from &&
                     dateRange?.to && (
-                      <p className="text-sm mt-2 text-text-secondary-light dark:text-text-secondary-dark">
+                      <p className="text-text-secondary-light dark:text-text-secondary-dark mt-2 text-sm">
                         {format(dateRange.from, "PPP", { locale: es })} –{" "}
                         {format(dateRange.to, "PPP", { locale: es })}
                       </p>
@@ -235,34 +235,34 @@ export default function AccommodationDetail() {
 
           {/* Columna de Reserva (Sticky) */}
           <div className="lg:col-span-1">
-            <div className="sticky top-24 p-6 bg-surface-light dark:bg-surface-dark rounded-xl shadow-lg border border-border-light dark:border-border-dark flex flex-col gap-6">
-              <p className="text-2xl font-bold text-text-primary-light dark:text-text-primary-dark">
+            <div className="bg-surface-light dark:bg-surface-dark border-border-light dark:border-border-dark sticky top-24 flex flex-col gap-6 rounded-xl border p-6 shadow-lg">
+              <p className="text-text-primary-light dark:text-text-primary-dark text-2xl font-bold">
                 ${price_per_night.toLocaleString("es-CO")}{" "}
-                <span className="text-base font-normal text-text-secondary-light dark:text-text-secondary-dark">
+                <span className="text-text-secondary-light dark:text-text-secondary-dark text-base font-normal">
                   / noche
                 </span>
               </p>
 
               {/* Fechas y Huéspedes */}
-              <div className="border border-border-light dark:border-border-dark rounded-lg">
+              <div className="border-border-light dark:border-border-dark rounded-lg border">
                 {/* Fechas */}
                 {isAvailable && daysNumber > 0 && (
-                  <div className="grid grid-cols-2 border-b border-border-light dark:border-border-dark">
+                  <div className="border-border-light dark:border-border-dark grid grid-cols-2 border-b">
                     <div className="p-3">
-                      <span className="text-xs font-bold uppercase text-text-secondary-light dark:text-text-secondary-dark">
+                      <span className="text-text-secondary-light dark:text-text-secondary-dark text-xs font-bold uppercase">
                         Llegada
                       </span>
-                      <p className="text-sm text-text-primary-light dark:text-text-primary-dark">
+                      <p className="text-text-primary-light dark:text-text-primary-dark text-sm">
                         {dateRange?.from
                           ? format(dateRange.from, "P", { locale: es })
                           : "--/--/----"}
                       </p>
                     </div>
-                    <div className="p-3 border-l border-border-light dark:border-border-dark">
-                      <span className="text-xs font-bold uppercase text-text-secondary-light dark:text-text-secondary-dark">
+                    <div className="border-border-light dark:border-border-dark border-l p-3">
+                      <span className="text-text-secondary-light dark:text-text-secondary-dark text-xs font-bold uppercase">
                         Salida
                       </span>
-                      <p className="text-sm text-text-primary-light dark:text-text-primary-dark">
+                      <p className="text-text-primary-light dark:text-text-primary-dark text-sm">
                         {dateRange?.to
                           ? format(dateRange.to, "P", { locale: es })
                           : "--/--/----"}
@@ -273,26 +273,26 @@ export default function AccommodationDetail() {
 
                 {/* Huéspedes */}
                 <div className="p-3">
-                  <span className="text-xs font-bold uppercase text-text-secondary-light dark:text-text-secondary-dark">
+                  <span className="text-text-secondary-light dark:text-text-secondary-dark text-xs font-bold uppercase">
                     Huéspedes
                   </span>
-                  <div className="flex items-center justify-between mt-1">
+                  <div className="mt-1 flex items-center justify-between">
                     <button
                       onClick={() => setGuests(Math.max(1, guests - 1))}
-                      className="p-1 rounded-full text-text-secondary-light dark:text-text-secondary-dark hover:bg-background-light dark:hover:bg-background-dark disabled:opacity-50"
+                      className="text-text-secondary-light dark:text-text-secondary-dark hover:bg-background-light dark:hover:bg-background-dark rounded-full p-1 disabled:opacity-50"
                       aria-label="Menos huéspedes"
                       disabled={guests <= 1}
                     >
                       <Minus size={16} />
                     </button>
-                    <span className="font-medium text-text-primary-light dark:text-text-primary-dark">
+                    <span className="text-text-primary-light dark:text-text-primary-dark font-medium">
                       {guests} {guests === 1 ? "huésped" : "huéspedes"}
                     </span>
                     <button
                       onClick={() =>
                         setGuests(Math.min(max_guests, guests + 1))
                       }
-                      className="p-1 rounded-full text-text-secondary-light dark:text-text-secondary-dark hover:bg-background-light dark:hover:bg-background-dark disabled:opacity-50"
+                      className="text-text-secondary-light dark:text-text-secondary-dark hover:bg-background-light dark:hover:bg-background-dark rounded-full p-1 disabled:opacity-50"
                       aria-label="Más huéspedes"
                       disabled={guests >= max_guests}
                     >
@@ -303,10 +303,10 @@ export default function AccommodationDetail() {
               </div>
 
               <button
-                className={`w-full font-bold py-3 rounded-lg transition-colors text-white ${
+                className={`w-full rounded-lg py-3 font-bold text-white transition-colors ${
                   isAvailable && daysNumber > 0
                     ? "bg-primary hover:bg-primary/90"
-                    : "bg-gray-300 dark:bg-gray-600 cursor-not-allowed"
+                    : "cursor-not-allowed bg-gray-300 dark:bg-gray-600"
                 }`}
                 disabled={!isAvailable || daysNumber === 0}
               >
@@ -314,30 +314,30 @@ export default function AccommodationDetail() {
               </button>
 
               {daysNumber > 0 && isAvailable && (
-                <div className="border-t border-border-light dark:border-border-dark pt-4 flex flex-col gap-3 text-text-secondary-light dark:text-text-secondary-dark">
-                  <div className="flex justify-between items-center">
+                <div className="border-border-light dark:border-border-dark text-text-secondary-light dark:text-text-secondary-dark flex flex-col gap-3 border-t pt-4">
+                  <div className="flex items-center justify-between">
                     <p className="underline">
                       {`${price_per_night.toLocaleString(
-                        "es-CO"
+                        "es-CO",
                       )} x ${daysNumber} ${
                         daysNumber === 1 ? "noche" : "noches"
                       }`}
                     </p>
                     <span>
                       {`${(price_per_night * daysNumber).toLocaleString(
-                        "es-CO"
+                        "es-CO",
                       )}`}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center">
+                  <div className="flex items-center justify-between">
                     <p className="underline">Tarifa de servicio</p>
                     <span>{`${(10000).toLocaleString("es-CO")}`}</span>
                   </div>
-                  <div className="flex justify-between items-center text-lg font-bold text-text-primary-light dark:text-text-primary-dark mt-2">
+                  <div className="text-text-primary-light dark:text-text-primary-dark mt-2 flex items-center justify-between text-lg font-bold">
                     <p>Total</p>
                     <span>
                       {`${(price_per_night * daysNumber + 10000).toLocaleString(
-                        "es-CO"
+                        "es-CO",
                       )}`}
                     </span>
                   </div>
@@ -345,12 +345,12 @@ export default function AccommodationDetail() {
               )}
 
               {daysNumber === 0 && (
-                <p className="text-center text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                <p className="text-text-secondary-light dark:text-text-secondary-dark text-center text-sm">
                   Selecciona un rango de fechas para ver el precio.
                 </p>
               )}
 
-              <p className="text-center text-xs text-text-secondary-light dark:text-text-secondary-dark">
+              <p className="text-text-secondary-light dark:text-text-secondary-dark text-center text-xs">
                 No se te cobrará nada aún
               </p>
             </div>
