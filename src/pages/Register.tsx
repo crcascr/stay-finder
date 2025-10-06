@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
+import { supabase } from "@/lib/supabase";
 
 export default function Register() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -48,12 +50,30 @@ export default function Register() {
     return !newErrors.email && !newErrors.password;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
-      console.log("Formulario válido, enviando datos:", formData);
-      // Aquí se enviaría el formulario
+    if (!validateForm()) return;
+
+    const { name, email, password } = formData;
+
+    // 1. Registro en auth.users
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { full_name: name }, // se guarda en raw_user_meta_data
+      },
+    });
+
+    if (authError) {
+      console.error("Error al registrarse:", authError.message);
+      alert(authError.message);
+      return;
     }
+
+    console.log("Registro exitoso:", authData);
+    // Opcional: redirigir a login o dashboard
+    navigate("/login"); // si usas react-router
   };
 
   return (

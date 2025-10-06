@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
+import { supabase } from "@/lib/supabase";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -36,12 +38,26 @@ export default function Login() {
     return !newErrors.email;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
-      console.log("Formulario válido, enviando datos:", formData);
-      // Aquí se enviaría el formulario
+    if (!validateForm()) return;
+
+    const { email, password } = formData;
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      console.error("Error al iniciar sesión:", error.message);
+      alert(error.message);
+      return;
     }
+
+    console.log("Login ok:", data);
+    // Opcional: redirigir
+    navigate("/");
   };
 
   return (
