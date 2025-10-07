@@ -1,6 +1,8 @@
-import { Search } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect,useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { Search } from "lucide-react";
+
 import { mockAccommodations } from "@/data/mockAccommodations";
 
 const heroImages = mockAccommodations.slice(0, 5).map((acc) => acc.images[0]);

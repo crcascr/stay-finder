@@ -1,4 +1,5 @@
 import { X } from "lucide-react";
+
 import type { Category, PropertyType } from "@/types/accommodation";
 
 interface FilterPanelProps {

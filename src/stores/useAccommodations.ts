@@ -1,4 +1,5 @@
 import { create } from "zustand";
+
 import type { Accommodation } from "@/types/accommodation";
 
 type State = {

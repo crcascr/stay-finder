@@ -1,8 +1,8 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Route,Routes } from "react-router-dom";
 
-import Home from "@/pages/Home";
-import Explore from "@/pages/Explore";
 import AccommodationDetail from "@/pages/AccommodationDetail";
+import Explore from "@/pages/Explore";
+import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 

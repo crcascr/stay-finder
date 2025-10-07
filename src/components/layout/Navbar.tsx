@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
+
 import UserMenu from "@/components/layout/UserMenu";
-import { useAuth } from "@/hooks/useAuth";
+import { useSession } from "@/stores/useSession";
 
 export default function Navbar() {
-  const { profile, signOut } = useAuth();
+  const profile = useSession((s) => s.profile);
+  const signOut = useSession((s) => s.signOut);
 
   return (
     <header className="bg-surface-light/80 dark:bg-surface-dark/80 border-border-light dark:border-border-dark sticky top-0 z-50 border-b backdrop-blur-sm">

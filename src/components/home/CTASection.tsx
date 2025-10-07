@@ -1,8 +1,9 @@
-import { useAuth } from "@/hooks/useAuth";
 import { Link } from "react-router-dom";
 
+import { useSession } from "@/stores/useSession";
+
 export default function CTASection() {
-  const { profile } = useAuth();
+  const profile = useSession((s) => s.profile);
   return (
     <section className="bg-background-light dark:bg-background-dark py-16 sm:py-24">
       <div className="container mx-auto px-6 text-center lg:px-8">

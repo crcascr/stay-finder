@@ -1,4 +1,4 @@
-import { Search, Calendar, Shield } from "lucide-react";
+import { Calendar, Search, Shield } from "lucide-react";
 
 interface Feature {
   id: number;

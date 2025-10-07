@@ -1,26 +1,30 @@
 import { useEffect, useMemo, useState } from "react";
+import { type DateRange,DayPicker } from "react-day-picker";
 import { useParams } from "react-router-dom";
-import { es } from "date-fns/locale";
-import { DayPicker, type DateRange } from "react-day-picker";
-import "react-day-picker/dist/style.css";
+
 import { format } from "date-fns";
-import Navbar from "@/components/layout/Navbar";
+import { es } from "date-fns/locale";
+import { Bath, Bed, MapPin, Minus, Plus,Star, Users } from "lucide-react";
+
 import Footer from "@/components/layout/Footer";
-import { mockAccommodations } from "@/data/mockAccommodations";
+import Navbar from "@/components/layout/Navbar";
+import { useAccommodations } from "@/stores/useAccommodations";
 import type { Accommodation } from "@/types/accommodation";
-import { Star, Users, Bed, Bath, MapPin, Minus, Plus } from "lucide-react";
 import { AmenityIcons } from "@/utils/AmenityIcons";
+
+import "react-day-picker/dist/style.css";
 
 export default function AccommodationDetail() {
   const { id } = useParams<{ id: string }>();
+  const { list } = useAccommodations();
   const [accommodation, setAccommodation] = useState<Accommodation | null>(
     null,
   );
 
   useEffect(() => {
-    const foundAccommodation = mockAccommodations.find((acc) => acc.id === id);
+    const foundAccommodation = list.find((acc) => acc.id === id);
     setAccommodation(foundAccommodation || null);
-  }, [id]);
+  }, [id, list]);
 
   // Estados para reserva
   const [dateRange, setDateRange] = useState<DateRange | undefined>();

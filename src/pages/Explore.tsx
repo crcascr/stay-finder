@@ -1,12 +1,13 @@
 import { useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import type { Category, PropertyType } from "@/types/accommodation";
-import { useAccommodations } from "@/stores/useAccommodations";
-import Navbar from "@/components/layout/Navbar";
-import SearchBar from "@/components/explore/SearchBar";
-import FilterPanel from "@/components/explore/FilterPanel";
+
 import AccommodationCard from "@/components/explore/AccommodationCard";
+import FilterPanel from "@/components/explore/FilterPanel";
+import SearchBar from "@/components/explore/SearchBar";
 import Footer from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
+import { useAccommodations } from "@/stores/useAccommodations";
+import type { Category, PropertyType } from "@/types/accommodation";
 
 export default function Explore() {
   const [searchParams, setSearchParams] = useSearchParams();

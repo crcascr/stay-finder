@@ -1,6 +1,7 @@
-import type { Profile } from "@/hooks/useAuth";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+
+import type { Profile } from "@/stores/useSession";
 
 type Props = { profile: Profile; onLogout: () => Promise<void> };
 
