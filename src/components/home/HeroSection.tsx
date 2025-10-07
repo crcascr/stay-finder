@@ -1,8 +1,7 @@
-import { Search, Star } from "lucide-react";
+import { Search } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { mockAccommodations } from "@/data/mockAccommodations";
-import type { Accommodation } from "@/types/accommodation";
 
 const heroImages = mockAccommodations.slice(0, 5).map((acc) => acc.images[0]);
 
@@ -10,7 +9,6 @@ export default function HeroSection() {
   const [searchQuery, setSearchQuery] = useState("");
   const [inputFocus, setInputFocus] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [instantResults, setInstantResults] = useState<Accommodation[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,21 +20,6 @@ export default function HeroSection() {
 
     return () => clearInterval(timer);
   }, []);
-
-  useEffect(() => {
-    if (searchQuery.trim().length > 1) {
-      const results = mockAccommodations
-        .filter(
-          (acc) =>
-            acc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            acc.location.toLowerCase().includes(searchQuery.toLowerCase()),
-        )
-        .slice(0, 5);
-      setInstantResults(results);
-    } else {
-      setInstantResults([]);
-    }
-  }, [searchQuery]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,42 +82,6 @@ export default function HeroSection() {
               </button>
             </div>
           </form>
-
-          {inputFocus && instantResults.length > 0 && (
-            <div className="bg-surface-light dark:bg-surface-dark absolute top-full mt-2 w-full overflow-hidden rounded-2xl text-left shadow-lg">
-              <ul>
-                {instantResults.map((acc) => (
-                  <li key={acc.id}>
-                    <Link
-                      to={`/accommodation/${acc.id}`}
-                      className="hover:bg-background-light dark:hover:bg-background-dark flex items-center p-3 transition-colors"
-                    >
-                      <img
-                        src={acc.images[0]}
-                        alt={acc.title}
-                        className="h-16 w-20 rounded-lg object-cover"
-                      />
-                      <div className="ml-4 flex-grow">
-                        <p className="text-text-primary-light dark:text-text-primary-dark font-semibold">
-                          {acc.title}
-                        </p>
-                        <p className="text-text-secondary-light dark:text-text-secondary-dark text-sm">
-                          {acc.location}
-                        </p>
-                      </div>
-                      <div className="text-text-primary-light dark:text-text-primary-dark ml-4 flex items-center font-bold">
-                        <Star
-                          size={16}
-                          className="mr-1 fill-current text-yellow-400"
-                        />
-                        {acc.rating.toFixed(1)}
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </div>
       </div>
     </section>
