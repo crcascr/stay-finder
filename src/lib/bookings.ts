@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import type { RawBooking } from "@/types/raw-supabase";
 
 export async function checkOverlap(
   accommodationId: string,
@@ -33,6 +34,35 @@ export async function createBooking(
       total_price: totalPrice,
       status: "confirmed",
     })
+    .select()
+    .single();
+  return { data, error };
+}
+
+export async function getMyBookings(): Promise<{
+  data: RawBooking[] | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  error: any;
+}> {
+  const { data, error } = await supabase
+    .from("bookings")
+    .select(`*, accommodation:accommodation_id!inner(*)`)
+    .order("check_in", { ascending: false });
+
+  // Confiamos en que la query devuelve exactamente RawBooking[]
+  return { data: data as RawBooking[], error };
+}
+
+export async function updateBookingStatus(
+  userId: string,
+  id: string,
+  status: "confirmed" | "cancelled",
+) {
+  const { data, error } = await supabase
+    .from("bookings")
+    .update({ status })
+    .eq("id", id)
+    .eq("user_id", userId)
     .select()
     .single();
   return { data, error };

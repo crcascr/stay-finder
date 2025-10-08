@@ -6,6 +6,7 @@ import Explore from "@/pages/Explore";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
+import Reservations from "@/pages/Reservations";
 import { useSession } from "@/stores/useSession";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/accommodation/:id" element={<AccommodationDetail />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/reservations" element={<Reservations />} />
       </Routes>
     </BrowserRouter>
   );

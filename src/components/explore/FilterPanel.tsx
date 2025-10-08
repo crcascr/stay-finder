@@ -51,7 +51,7 @@ export default function FilterPanel({
         <h3 className="text-xl font-bold">Filtros</h3>
         <button
           onClick={onClearFilters}
-          className="text-primary hover:text-primary/80 flex items-center gap-1 text-sm"
+          className="text-primary hover:text-primary/80 flex cursor-pointer items-center gap-1 text-sm"
         >
           <X size={16} />
           Limpiar
@@ -70,7 +70,7 @@ export default function FilterPanel({
                   selectedCategory === cat.value ? undefined : cat.value,
                 )
               }
-              className={`w-full rounded-lg px-4 py-2 text-left transition-colors ${
+              className={`w-full cursor-pointer rounded-lg px-4 py-2 text-left transition-colors ${
                 selectedCategory === cat.value
                   ? "bg-primary text-white"
                   : "bg-background-light dark:bg-background-dark hover:bg-primary/10"
@@ -92,7 +92,7 @@ export default function FilterPanel({
           onChange={(e) =>
             onPropertyTypeChange((e.target.value as PropertyType) || undefined)
           }
-          className="bg-background-light dark:bg-background-dark border-border-light dark:border-border-dark focus:ring-primary w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
+          className="bg-background-light dark:bg-background-dark border-border-light dark:border-border-dark focus:ring-primary w-full cursor-pointer rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
         >
           <option value="">Todos</option>
           {propertyTypes.map((type) => (
@@ -131,7 +131,7 @@ export default function FilterPanel({
             </label>
             <input
               type="number"
-              value={maxPrice || ""}
+              value={maxPrice === Infinity ? "" : maxPrice || ""}
               onChange={(e) =>
                 onMaxPriceChange(
                   e.target.value ? Number(e.target.value) : undefined,
