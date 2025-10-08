@@ -1,8 +1,10 @@
+import type { ReactNode } from "react";
+
 import { Calendar, Search, Shield } from "lucide-react";
 
 interface Feature {
   id: number;
-  icon: React.ReactNode;
+  icon: ReactNode;
   title: string;
   description: string;
 }

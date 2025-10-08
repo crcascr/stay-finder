@@ -1,15 +1,18 @@
-import { useEffect, useMemo, useState } from "react";
-import { type DateRange,DayPicker } from "react-day-picker";
+import { useMemo, useState } from "react";
+import { type DateRange, DayPicker } from "react-day-picker";
+import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { Bath, Bed, MapPin, Minus, Plus,Star, Users } from "lucide-react";
+import { Bath, Bed, MapPin, Minus, Plus, Star, Users } from "lucide-react";
 
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
+import Loader from "@/components/ui/Loader";
+import { checkOverlap, createBooking } from "@/lib/bookings";
 import { useAccommodations } from "@/stores/useAccommodations";
-import type { Accommodation } from "@/types/accommodation";
+import { useSession } from "@/stores/useSession";
 import { AmenityIcons } from "@/utils/AmenityIcons";
 
 import "react-day-picker/dist/style.css";
@@ -17,20 +20,22 @@ import "react-day-picker/dist/style.css";
 export default function AccommodationDetail() {
   const { id } = useParams<{ id: string }>();
   const { list } = useAccommodations();
-  const [accommodation, setAccommodation] = useState<Accommodation | null>(
-    null,
-  );
-
-  useEffect(() => {
-    const foundAccommodation = list.find((acc) => acc.id === id);
-    setAccommodation(foundAccommodation || null);
-  }, [id, list]);
+  const profile = useSession((s) => s.profile);
 
   // Estados para reserva
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [guests, setGuests] = useState(2);
-  const [isAvailable, setIsAvailable] = useState(true);
-  const [daysNumber, setDaysNumber] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const accommodation = list.find((a) => a.id === id);
+  const totalNights =
+    dateRange?.from && dateRange?.to
+      ? (dateRange.to.getTime() - dateRange.from.getTime()) /
+        (1000 * 60 * 60 * 24)
+      : 0;
+  const totalPrice = accommodation
+    ? totalNights * accommodation?.price_per_night + 10_000
+    : 0;
 
   const handleDateSelect = (range: DateRange | undefined) => {
     // Aseguramos que el rango siempre tenga `from` y `to` definidos
@@ -44,6 +49,53 @@ export default function AccommodationDetail() {
       setDateRange({ from, to });
     } else {
       // Si se deselecciona (ej: clic en una fecha ya seleccionada)
+      setDateRange(undefined);
+    }
+  };
+
+  const handleReserve = async () => {
+    if (!profile) {
+      toast.error("Inicia sesión para reservar");
+      return;
+    }
+    if (!dateRange?.from || !dateRange?.to) {
+      toast.error("Selecciona fechas");
+      return;
+    }
+
+    if (!accommodation) {
+      toast.error("Alojamiento no encontrado");
+      return;
+    }
+
+    setLoading(true);
+
+    const checkIn = dateRange.from.toISOString().slice(0, 10);
+    const checkOut = dateRange.to.toISOString().slice(0, 10);
+
+    // 1. Validar solapamiento
+    const overlap = await checkOverlap(accommodation.id, checkIn, checkOut);
+    if (overlap.length > 0) {
+      toast.error("Las fechas ya están reservadas");
+      setLoading(false);
+      return;
+    }
+
+    // 2. Crear reserva
+    const { error } = await createBooking(
+      profile.id,
+      accommodation.id,
+      dateRange.from,
+      dateRange.to,
+      guests,
+      totalPrice,
+    );
+
+    setLoading(false);
+    if (error) {
+      toast.error("Ocurrió un error al confirmar");
+    } else {
+      toast.success("¡Reserva confirmada!");
       setDateRange(undefined);
     }
   };
@@ -62,35 +114,6 @@ export default function AccommodationDetail() {
 
     return [past, ...unavailable];
   }, [accommodation]);
-
-  // Validar disponibilidad del rango seleccionado
-  useEffect(() => {
-    if (!dateRange?.from || !dateRange?.to || !accommodation) {
-      setIsAvailable(true);
-      return;
-    }
-
-    // Generar todas las fechas en el rango
-    const start = new Date(dateRange.from);
-    const end = new Date(dateRange.to);
-    const current = new Date(start);
-
-    let isRangeAvailable = true;
-    while (current <= end) {
-      const dateStr = format(current, "yyyy-MM-dd");
-      if (accommodation.unavailable_dates.includes(dateStr)) {
-        isRangeAvailable = false;
-        break;
-      }
-      current.setDate(current.getDate() + 1);
-    }
-
-    setIsAvailable(isRangeAvailable);
-    setDaysNumber(
-      (dateRange.to.getTime() - dateRange.from.getTime()) /
-        (1000 * 60 * 60 * 24),
-    );
-  }, [dateRange, accommodation]);
 
   if (!accommodation) {
     return (
@@ -250,7 +273,7 @@ export default function AccommodationDetail() {
               {/* Fechas y Huéspedes */}
               <div className="border-border-light dark:border-border-dark rounded-lg border">
                 {/* Fechas */}
-                {isAvailable && daysNumber > 0 && (
+                {totalNights > 0 && (
                   <div className="border-border-light dark:border-border-dark grid grid-cols-2 border-b">
                     <div className="p-3">
                       <span className="text-text-secondary-light dark:text-text-secondary-dark text-xs font-bold uppercase">
@@ -307,28 +330,25 @@ export default function AccommodationDetail() {
               </div>
 
               <button
-                className={`w-full rounded-lg py-3 font-bold text-white transition-colors ${
-                  isAvailable && daysNumber > 0
-                    ? "bg-primary hover:bg-primary/90"
-                    : "cursor-not-allowed bg-gray-300 dark:bg-gray-600"
-                }`}
-                disabled={!isAvailable || daysNumber === 0}
+                onClick={handleReserve}
+                disabled={!dateRange?.from || !dateRange?.to}
+                className="bg-primary hover:bg-primary/90 w-full cursor-pointer rounded-lg py-3 font-bold text-white disabled:cursor-not-allowed disabled:opacity-60"
               >
                 Reservar
               </button>
 
-              {daysNumber > 0 && isAvailable && (
+              {totalNights > 0 && (
                 <div className="border-border-light dark:border-border-dark text-text-secondary-light dark:text-text-secondary-dark flex flex-col gap-3 border-t pt-4">
                   <div className="flex items-center justify-between">
                     <p className="underline">
                       {`${price_per_night.toLocaleString(
                         "es-CO",
-                      )} x ${daysNumber} ${
-                        daysNumber === 1 ? "noche" : "noches"
+                      )} x ${totalNights} ${
+                        totalNights === 1 ? "noche" : "noches"
                       }`}
                     </p>
                     <span>
-                      {`${(price_per_night * daysNumber).toLocaleString(
+                      {`${(price_per_night * totalNights).toLocaleString(
                         "es-CO",
                       )}`}
                     </span>
@@ -339,16 +359,12 @@ export default function AccommodationDetail() {
                   </div>
                   <div className="text-text-primary-light dark:text-text-primary-dark mt-2 flex items-center justify-between text-lg font-bold">
                     <p>Total</p>
-                    <span>
-                      {`${(price_per_night * daysNumber + 10000).toLocaleString(
-                        "es-CO",
-                      )}`}
-                    </span>
+                    <span>{`${totalPrice.toLocaleString("es-CO")}`}</span>
                   </div>
                 </div>
               )}
 
-              {daysNumber === 0 && (
+              {totalNights === 0 && (
                 <p className="text-text-secondary-light dark:text-text-secondary-dark text-center text-sm">
                   Selecciona un rango de fechas para ver el precio.
                 </p>
@@ -362,6 +378,8 @@ export default function AccommodationDetail() {
         </div>
       </main>
       <Footer />
+      {/* Overlay loader */}
+      {loading && <Loader message="Confirmando reserva" />}
     </div>
   );
 }

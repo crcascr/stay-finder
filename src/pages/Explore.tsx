@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from "react";
+import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
 
 import AccommodationCard from "@/components/explore/AccommodationCard";
@@ -6,12 +7,13 @@ import FilterPanel from "@/components/explore/FilterPanel";
 import SearchBar from "@/components/explore/SearchBar";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
+import Loader from "@/components/ui/Loader";
 import { useAccommodations } from "@/stores/useAccommodations";
 import type { Category, PropertyType } from "@/types/accommodation";
 
 export default function Explore() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { list, loading, fetchList } = useAccommodations();
+  const { list, loading, fetchList, error } = useAccommodations();
 
   /* ---------- filtros desde URL ---------- */
   const searchQuery = searchParams.get("q") ?? "";
@@ -26,7 +28,8 @@ export default function Explore() {
   /* ---------- cargar datos 1ª vez ---------- */
   useEffect(() => {
     fetchList();
-  }, [fetchList]);
+    if (error) toast.error("Ocurrió un error al cargar los alojamientos");
+  }, [fetchList, error]);
 
   /* ---------- filtros en memoria ---------- */
   const filtered = useMemo(() => {
@@ -66,8 +69,6 @@ export default function Explore() {
   };
   const clearFilters = () => setSearchParams({});
 
-  /* ---------- UI ---------- */
-  if (loading) return <p className="p-8">Cargando alojamientos…</p>;
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
@@ -134,6 +135,8 @@ export default function Explore() {
         </div>
       </main>
       <Footer />
+      {/* Overlay loader */}
+      {loading && <Loader message="Cargando alojamientos" />}
     </div>
   );
 }

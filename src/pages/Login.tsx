@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { type ChangeEvent, type FormEvent,useState } from "react";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
 import { Eye, EyeOff } from "lucide-react";
 
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
+import Loader from "@/components/ui/Loader";
 import { supabase } from "@/lib/supabase";
 
 export default function Login() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -22,7 +25,7 @@ export default function Login() {
     setShowPassword(!showPassword);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
@@ -40,25 +43,24 @@ export default function Login() {
     return !newErrors.email;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
 
+    setLoading(true);
     const { email, password } = formData;
-
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+    setLoading(false);
 
     if (error) {
-      console.error("Error al iniciar sesión:", error.message);
-      alert(error.message);
+      toast.error("Ocurrió un error al iniciar sesión");
       return;
     }
 
-    console.log("Login ok:", data);
-    // Opcional: redirigir
+    toast.success("¡Sesión iniciada!");
     navigate("/");
   };
 
@@ -168,6 +170,8 @@ export default function Login() {
         </div>
       </main>
       <Footer />
+      {/* Overlay loader */}
+      {loading && <Loader message="Iniciando sesión" />}
     </div>
   );
 }

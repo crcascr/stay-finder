@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react";
+import { type FocusEvent, type FormEvent,useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Search } from "lucide-react";
@@ -23,14 +23,14 @@ export default function HeroSection() {
     return () => clearInterval(timer);
   }, []);
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/explore?q=${encodeURIComponent(searchQuery.trim())}`);
     }
   };
 
-  const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+  const handleBlur = (e: FocusEvent<HTMLDivElement>) => {
     if (
       e.currentTarget &&
       !e.currentTarget.contains(e.relatedTarget as Node | null)

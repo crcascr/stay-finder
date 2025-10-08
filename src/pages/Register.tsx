@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { type ChangeEvent, type FormEvent,useState } from "react";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
 import { Eye, EyeOff } from "lucide-react";
 
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
+import Loader from "@/components/ui/Loader";
 import { supabase } from "@/lib/supabase";
 
 export default function Register() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -30,7 +33,7 @@ export default function Register() {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
@@ -48,34 +51,30 @@ export default function Register() {
     }
 
     setErrors(newErrors);
-
     return !newErrors.email && !newErrors.password;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
 
+    setLoading(true);
     const { name, email, password } = formData;
-
-    // 1. Registro en auth.users
-    const { data: authData, error: authError } = await supabase.auth.signUp({
+    const { error: authError } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: { full_name: name }, // se guarda en raw_user_meta_data
+        data: { full_name: name },
       },
     });
+    setLoading(false);
 
     if (authError) {
-      console.error("Error al registrarse:", authError.message);
-      alert(authError.message);
+      toast.error("Ocurrió un error al registrarte");
       return;
     }
-
-    console.log("Registro exitoso:", authData);
-    // Opcional: redirigir a login o dashboard
-    navigate("/login"); // si usas react-router
+    toast.success("¡Registro exitoso!");
+    navigate("/login");
   };
 
   return (
@@ -210,6 +209,8 @@ export default function Register() {
         </div>
       </main>
       <Footer />
+      {/* Overlay loader */}
+      {loading && <Loader message="Registrandote" />}
     </div>
   );
 }
