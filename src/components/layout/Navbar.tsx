@@ -10,8 +10,7 @@ export default function Navbar() {
   return (
     <header className="bg-surface-light/80 dark:bg-surface-dark/80 border-border-light dark:border-border-dark sticky top-0 z-50 border-b backdrop-blur-sm">
       <nav className="container mx-auto flex items-center justify-between px-6 py-4 lg:px-8">
-        <Link className="flex cursor-pointer items-center gap-3" to="/">
-          {/* tu logo */}
+        <Link className="flex items-center gap-3" to="/">
           <svg
             className="text-primary h-8 w-8"
             fill="none"
@@ -29,12 +28,12 @@ export default function Navbar() {
         <div className="hidden items-center gap-8 md:flex">
           <Link
             to="/explore"
-            className="hover:text-primary cursor-pointer text-base font-medium transition-colors"
+            className="hover:text-primary text-base font-medium transition-colors"
           >
             Explorar
           </Link>
           <a
-            className="hover:text-primary cursor-pointer text-base font-medium transition-colors"
+            className="hover:text-primary text-base font-medium transition-colors"
             href="#support"
           >
             Soporte

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import AccommodationDetail from "@/pages/AccommodationDetail";
+import AccommodationForm from "@/pages/dashboard/AccommodationForm";
 import AccommodationsAdmin from "@/pages/dashboard/AccommodationsAdmin";
 import BookingsAdmin from "@/pages/dashboard/BookingsAdmin";
 import DashboardOverview from "@/pages/dashboard/Overview";
@@ -36,6 +37,14 @@ function App() {
           />
           <Route path="/dashboard/users" element={<UsersAdmin />} />
           <Route path="/dashboard/bookings" element={<BookingsAdmin />} />
+          <Route
+            path="/dashboard/accommodations/new"
+            element={<AccommodationForm />}
+          />
+          <Route
+            path="/dashboard/accommodations/edit/:id"
+            element={<AccommodationForm />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

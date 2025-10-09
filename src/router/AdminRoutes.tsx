@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 
-import DashboardLayout from "@/components/dashboard/Layout";
+import DashboardLayout from "@/components/layout/Dashboard";
 import Loader from "@/components/ui/Loader";
 import { useSession } from "@/stores/useSession";
 
