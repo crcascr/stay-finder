@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { type DateRange, DayPicker } from "react-day-picker";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
@@ -10,9 +10,14 @@ import { Bath, Bed, MapPin, Minus, Plus, Star, Users } from "lucide-react";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import Loader from "@/components/ui/Loader";
-import { checkOverlap, createBooking } from "@/lib/bookings";
+import {
+  checkOverlap,
+  createBooking,
+  getAccommodationById,
+} from "@/lib/bookings";
 import { useAccommodations } from "@/stores/useAccommodations";
 import { useSession } from "@/stores/useSession";
+import type { Accommodation } from "@/types/raw-supabase";
 import { AmenityIcons } from "@/utils/AmenityIcons";
 
 import "react-day-picker/dist/style.css";
@@ -25,9 +30,33 @@ export default function AccommodationDetail() {
   // Estados para reserva
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [guests, setGuests] = useState(2);
-  const [loading, setLoading] = useState(false);
+  const [accommodation, setAccommodation] = useState<Accommodation | null>(
+    null,
+  );
+  const [loading, setLoading] = useState(true);
 
-  const accommodation = list.find((a) => a.id === id);
+  useEffect(() => {
+    const loadAccommodation = async () => {
+      setLoading(true);
+      const fromStore = list.find((a) => a.id === id);
+      if (fromStore) {
+        setAccommodation(fromStore);
+        setLoading(false);
+        return;
+      }
+
+      const { data, error } = await getAccommodationById(id!);
+      if (error || !data) {
+        setAccommodation(null);
+        toast.error("Alojamiento no encontrado");
+      } else {
+        setAccommodation(data as Accommodation);
+      }
+      setLoading(false);
+    };
+    loadAccommodation();
+  }, [id, list]);
+
   const totalNights =
     dateRange?.from && dateRange?.to
       ? (dateRange.to.getTime() - dateRange.from.getTime()) /
@@ -102,7 +131,7 @@ export default function AccommodationDetail() {
 
   // Calcular fechas deshabilitadas
   const disabledDates = useMemo(() => {
-    if (!accommodation) return [];
+    if (!accommodation || !accommodation.unavailable_dates) return [];
 
     // Fechas pasadas + fechas no disponibles
     const past = { before: new Date() };
@@ -114,6 +143,15 @@ export default function AccommodationDetail() {
 
     return [past, ...unavailable];
   }, [accommodation]);
+
+  if (loading)
+    return (
+      <>
+        <Navbar />
+        <Loader />
+        <Footer />
+      </>
+    );
 
   if (!accommodation) {
     return (
@@ -130,16 +168,17 @@ export default function AccommodationDetail() {
   const {
     title,
     location,
-    images,
     description,
-    rating,
     reviews_count,
     max_guests,
     bedrooms,
     bathrooms,
     price_per_night,
-    amenities,
   } = accommodation;
+
+  const images: string[] = accommodation.images ?? [];
+  const rating: number = accommodation.rating ?? 0;
+  const amenities: string[] = accommodation.amenities ?? [];
 
   return (
     <div className="bg-background-light dark:bg-background-dark flex min-h-screen flex-col">
@@ -378,8 +417,6 @@ export default function AccommodationDetail() {
         </div>
       </main>
       <Footer />
-      {/* Overlay loader */}
-      {loading && <Loader message="Confirmando reserva" />}
     </div>
   );
 }

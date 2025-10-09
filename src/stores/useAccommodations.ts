@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import type { Accommodation } from "@/types/accommodation";
+import type { Accommodation } from "@/types/raw-supabase";
 
 type State = {
   list: Accommodation[];

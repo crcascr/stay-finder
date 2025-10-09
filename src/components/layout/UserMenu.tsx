@@ -28,7 +28,7 @@ export default function UserMenu({ profile, onLogout }: Props) {
         <div className="absolute right-0 mt-2 w-48 origin-top-right rounded-lg border bg-white shadow-lg dark:bg-gray-800">
           <div className="p-2">
             <Link
-              to={profile.role === "admin" ? "/admin" : "/reservations"}
+              to={profile.role === "admin" ? "/dashboard" : "/reservations"}
               className="block rounded px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
               onClick={() => setOpen(false)}
             >

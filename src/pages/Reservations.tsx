@@ -100,7 +100,7 @@ export default function Reservations() {
               No tienes reservas canceladas.
             </p>
           ) : (
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-6 opacity-75 md:grid-cols-2 xl:grid-cols-3">
               {cancelled.map((b) => (
                 <Card key={b.id} booking={b} />
               ))}

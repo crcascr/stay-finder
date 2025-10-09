@@ -53,6 +53,15 @@ export async function getMyBookings(): Promise<{
   return { data: data as RawBooking[], error };
 }
 
+export async function getAccommodationById(id: string) {
+  const { data, error } = await supabase
+    .from("accommodations")
+    .select("*")
+    .eq("id", id)
+    .single();
+  return { data, error };
+}
+
 export async function updateBookingStatus(
   userId: string,
   id: string,
