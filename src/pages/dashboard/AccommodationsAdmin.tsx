@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
-import { Edit, MapPinOff, Plus, Trash2 } from "lucide-react";
+import { Check, Edit, MapPinOff, Plus, Trash2 } from "lucide-react";
 
 import SearchBar from "@/components/explore/SearchBar";
 import Loader from "@/components/ui/Loader";
@@ -15,23 +15,29 @@ export default function AccommodationsAdmin() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchList();
-    setLoading(false);
-  }, [fetchList]);
+    if (list.length === 0) fetchList().then(() => setLoading(false));
+    else setLoading(false);
+  }, [list, fetchList]);
 
   const filtered = list.filter((a) =>
     a.title.toLowerCase().includes(q.toLowerCase()),
   );
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("¿Marcar como no disponible? (soft-delete)")) return;
+  const handleChangeStatus = async (id: string, availableTo: boolean) => {
+    const action = availableTo ? "activa" : "desactiva";
+    if (availableTo === false) {
+      if (!confirm("¿Marcar como no disponible? (soft-delete)")) return;
+    } else {
+      if (!confirm("¿Marcar como disponible?")) return;
+    }
     const { error } = await supabase
       .from("accommodations")
-      .update({ is_available: false })
+      .update({ is_available: availableTo })
       .eq("id", id);
-    if (error) toast.error("Error al eliminar");
-    else {
-      toast.success("Alojamiento desactivado");
+    if (error) {
+      toast.error(`Error al ${action}r alojamiento`);
+    } else {
+      toast.success(`Alojamiento ${action}do`);
       fetchList();
     }
   };
@@ -64,7 +70,7 @@ export default function AccommodationsAdmin() {
           {filtered.map((acc) => (
             <div
               key={acc.id}
-              className="bg-surface-light dark:bg-surface-dark rounded-lg border p-4 shadow"
+              className="bg-surface-light dark:bg-surface-dark rounded-lg p-4 shadow-md transition-shadow hover:shadow-xl"
             >
               <img
                 src={acc.images?.[0] || "/placeholder-house.jpg"}
@@ -76,17 +82,21 @@ export default function AccommodationsAdmin() {
               <div className="mt-4 flex items-center gap-2">
                 <Link
                   to={`/dashboard/accommodations/edit/${acc.id}`}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="bg-primary hover:bg-primary/90 flex flex-1 items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm transition-colors focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                   <Edit size={16} />
                   <span>Editar</span>
                 </Link>
                 <button
-                  onClick={() => handleDelete(acc.id)}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                  onClick={() => handleChangeStatus(acc.id, !acc.is_available)}
+                  className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm transition-colors focus-visible:outline focus-visible:outline-offset-2 ${acc.is_available ? "bg-red-600 hover:bg-red-500 focus-visible:outline-red-600" : "bg-green-600 hover:bg-green-500 focus-visible:outline-green-600"}`}
                 >
-                  <Trash2 size={16} />
-                  <span>Desactivar</span>
+                  {acc.is_available ? (
+                    <Trash2 size={16} />
+                  ) : (
+                    <Check size={16} />
+                  )}
+                  <span>{acc.is_available ? "Desactivar" : "Activar"}</span>
                 </button>
               </div>
             </div>
