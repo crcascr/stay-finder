@@ -7,10 +7,10 @@ import { Check, Edit, MapPinOff, Plus, Trash2 } from "lucide-react";
 import SearchBar from "@/components/explore/SearchBar";
 import Loader from "@/components/ui/Loader";
 import { supabase } from "@/lib/supabase";
-import { useAccommodations } from "@/stores/useAccommodations";
+import { useAdminAccommodations } from "@/stores/useAdminAccommodations";
 
 export default function AccommodationsAdmin() {
-  const { list, fetchList } = useAccommodations();
+  const { list, fetchList } = useAdminAccommodations();
   const [q, setQ] = useState("");
   const [loading, setLoading] = useState(true);
 

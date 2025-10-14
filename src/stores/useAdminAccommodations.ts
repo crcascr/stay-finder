@@ -9,7 +9,7 @@ type State = {
   fetchList: () => Promise<void>;
 };
 
-export const useAccommodations = create<State>((set) => ({
+export const useAdminAccommodations = create<State>((set) => ({
   list: [],
   loading: false,
   error: null,
@@ -18,8 +18,7 @@ export const useAccommodations = create<State>((set) => ({
     set({ loading: true, error: null });
     const { data, error } = await (await import("@/lib/supabase")).supabase
       .from("accommodations")
-      .select("*")
-      .eq("is_available", true);
+      .select("*");
 
     if (error) {
       set({ error: error.message, loading: false });
