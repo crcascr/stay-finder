@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import AccommodationDetail from "@/pages/AccommodationDetail";
@@ -18,7 +19,9 @@ import { useSession } from "@/stores/useSession";
 function App() {
   const checkSession = useSession((s) => s.checkSession);
   useEffect(() => {
-    checkSession();
+    checkSession().then((res) => {
+      if (!res.ok && res.error) toast.error(res.error);
+    });
   }, [checkSession]);
   return (
     <BrowserRouter>

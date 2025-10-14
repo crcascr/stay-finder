@@ -15,11 +15,11 @@ export default function DashboardLayout() {
 
   const Sidebar = () => (
     <aside
-      className={`bg-surface-light dark:bg-surface-dark fixed top-0 left-0 z-40 h-screen w-64 shrink-0 border-r transition-transform lg:relative lg:translate-x-0 ${
+      className={`bg-surface-light dark:bg-surface-dark border-border-light dark:border-border-dark fixed top-0 left-0 z-40 h-screen w-64 shrink-0 border-r transition-transform lg:relative lg:h-auto lg:translate-x-0 ${
         isSidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
-      <div className="flex items-center justify-between p-4">
+      <div className="border-border-light dark:border-border-dark flex items-center justify-between border-b p-4">
         <Link className="flex items-center gap-3" to="/">
           <svg
             className="text-primary h-8 w-8"
@@ -32,7 +32,9 @@ export default function DashboardLayout() {
               fill="currentColor"
             />
           </svg>
-          <h2 className="text-xl font-bold">StayFinder</h2>
+          <h2 className="text-text-primary-light dark:text-text-primary-dark text-xl font-bold">
+            StayFinder
+          </h2>
         </Link>
         <button
           onClick={() => setSidebarOpen(false)}
@@ -41,15 +43,17 @@ export default function DashboardLayout() {
           <X size={24} />
         </button>
       </div>
-      <nav className="space-y-2 px-4">
+      <nav className="space-y-2 p-4">
         {nav.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
             to={to}
             end
             className={({ isActive }) =>
-              `flex items-center gap-3 rounded-lg px-3 py-2 transition-colors ${
-                isActive ? "bg-primary text-white" : "hover:bg-primary/10"
+              `flex items-center gap-3 rounded-lg px-3 py-2 font-medium transition-colors ${
+                isActive
+                  ? "bg-primary text-white"
+                  : "text-text-secondary-light dark:text-text-secondary-dark hover:bg-primary/10 hover:text-text-primary-light dark:hover:text-text-primary-dark"
               }`
             }
           >
@@ -65,14 +69,13 @@ export default function DashboardLayout() {
     <div className="bg-background-light dark:bg-background-dark flex min-h-screen">
       <Sidebar />
       <div className="flex flex-1 flex-col">
-        <header className="bg-surface-light dark:bg-surface-dark flex h-16 items-center justify-between border-b px-6 lg:justify-end">
+        <header className="bg-surface-light dark:bg-surface-dark flex h-16 items-center justify-between border-b px-6 lg:hidden lg:justify-end">
           <button
             onClick={() => setSidebarOpen(true)}
             className="text-text-primary-light dark:text-text-primary-dark lg:hidden"
           >
             <Menu size={24} />
           </button>
-          {/* Aquí podrías añadir un menú de usuario, notificaciones, etc. */}
         </header>
         <main className="flex-1 overflow-y-auto p-6">
           <Outlet />
