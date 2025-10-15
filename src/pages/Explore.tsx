@@ -39,8 +39,8 @@ export default function Explore() {
           const q = searchQuery.toLowerCase();
           return (
             acc.title.toLowerCase().includes(q) ||
-            acc.location.toLowerCase().includes(q) ||
-            acc.city.toLowerCase().includes(q)
+            (acc.location || "").toLowerCase().includes(q) ||
+            (acc.city || "").toLowerCase().includes(q)
           );
         }
         return true;

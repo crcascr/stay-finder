@@ -1,11 +1,13 @@
-import { type FocusEvent, type FormEvent,useEffect, useState } from "react";
+import { type FocusEvent, type FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Search } from "lucide-react";
 
 import { mockAccommodations } from "@/data/mockAccommodations";
 
-const heroImages = mockAccommodations.slice(0, 5).map((acc) => acc.images[0]);
+const heroImages = mockAccommodations.slice(0, 5).map((acc) => {
+  return acc.images?.[0] || "/placeholder-house.jpg";
+});
 
 export default function HeroSection() {
   const [searchQuery, setSearchQuery] = useState("");

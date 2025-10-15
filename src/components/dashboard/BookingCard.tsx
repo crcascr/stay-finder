@@ -1,4 +1,4 @@
-import { Calendar, Moon, User,Users } from "lucide-react";
+import { Calendar, Moon, User, Users } from "lucide-react";
 
 import type { Booking } from "@/stores/useAdminBookings";
 
@@ -67,7 +67,7 @@ export default function BookingCard({
       </div>
 
       {/* Total + estado */}
-      <div className="mt-4 flex items-center justify-between border-t border-border-light pt-3 dark:border-border-dark">
+      <div className="border-border-light dark:border-border-dark mt-4 flex items-center justify-between border-t pt-3">
         <span className="text-text-primary-light dark:text-text-primary-dark font-semibold">
           Total: ${booking.total_price.toLocaleString("es-CO")}
         </span>

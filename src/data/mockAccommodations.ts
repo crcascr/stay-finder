@@ -256,7 +256,7 @@ export const mockAccommodations: Accommodation[] = [
   },
 ];
 
-// Función para simular búsqueda (luego la usaremos con Supabase)
+// Función para simular búsqueda
 export const searchAccommodations = (filters: {
   query?: string;
   category?: string;
@@ -271,9 +271,9 @@ export const searchAccommodations = (filters: {
       const searchLower = filters.query.toLowerCase();
       const matchesSearch =
         acc.title.toLowerCase().includes(searchLower) ||
-        acc.description.toLowerCase().includes(searchLower) ||
-        acc.location.toLowerCase().includes(searchLower) ||
-        acc.city.toLowerCase().includes(searchLower);
+        (acc.description || "").toLowerCase().includes(searchLower) ||
+        (acc.location || "").toLowerCase().includes(searchLower) ||
+        (acc.city || "").toLowerCase().includes(searchLower);
 
       if (!matchesSearch) return false;
     }
