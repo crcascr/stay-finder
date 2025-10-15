@@ -22,7 +22,7 @@ export const useSession = create<State>((set) => ({
     const { data } = await supabase.auth.getUser();
     if (!data.user) {
       set({ profile: null, loading: false });
-      return { ok: false }; // <-- sin error
+      return { ok: false };
     }
 
     const { data: profile } = await supabase

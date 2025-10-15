@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+import Loader from "@/components/ui/Loader";
 import AccommodationDetail from "@/pages/AccommodationDetail";
 import AccommodationForm from "@/pages/dashboard/AccommodationForm";
 import AccommodationsAdmin from "@/pages/dashboard/AccommodationsAdmin";
@@ -18,11 +19,15 @@ import { useSession } from "@/stores/useSession";
 
 function App() {
   const checkSession = useSession((s) => s.checkSession);
+  const [checked, setChecked] = useState(false);
   useEffect(() => {
     checkSession().then((res) => {
       if (!res.ok && res.error) toast.error(res.error);
+      setChecked(true);
     });
   }, [checkSession]);
+
+  if (!checked) return <Loader />;
   return (
     <BrowserRouter>
       <Routes>
