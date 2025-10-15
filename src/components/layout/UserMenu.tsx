@@ -8,7 +8,7 @@ type Props = { profile: Profile; onLogout: () => Promise<void> };
 export default function UserMenu({ profile, onLogout }: Props) {
   const [open, setOpen] = useState(false);
 
-  const initials = profile.full_name
+  const initials = (profile.full_name || "")
     .split(" ")
     .map((n) => n[0])
     .join("")

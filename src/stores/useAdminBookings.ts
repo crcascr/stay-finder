@@ -9,7 +9,7 @@ export type Booking = {
   guests: number;
   total_price: number;
   status: "confirmed" | "cancelled" | "pending";
-  user: { id: string; full_name: string; email: string };
+  profile: { id: string; full_name: string; email: string };
   accommodation: {
     id: string;
     title: string;
@@ -25,7 +25,7 @@ type State = {
   cancelBooking: (id: string) => Promise<{ ok: boolean; error?: string }>;
 };
 
-export const useAdminBookings = create<State>((set, get) => ({
+export const useAdminBookings = create<State>((set) => ({
   list: null,
   loading: false,
 
@@ -48,7 +48,7 @@ export const useAdminBookings = create<State>((set, get) => ({
       .order("check_in", { ascending: false });
 
     if (error) return { ok: false, error: error.message };
-    set({ list: data as Booking[] });
+    set({ list: data as unknown as Booking[] });
     return { ok: true };
   },
 

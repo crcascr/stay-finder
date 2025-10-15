@@ -122,17 +122,18 @@ export default function AccommodationForm() {
     const e: Record<string, string> = {};
 
     if (!form.title.trim()) e.title = "El título es obligatorio";
-    if (!form.description.trim())
+    if (!(form.description || "").trim())
       e.description = "La descripción es obligatoria";
-    if (!form.location.trim()) e.location = "La ubicación es obligatoria";
-    if (!form.city.trim()) e.city = "La ciudad es obligatoria";
-    if (!form.country.trim()) e.country = "El país es obligatorio";
+    if (!(form.location || "").trim())
+      e.location = "La ubicación es obligatoria";
+    if (!(form.city || "").trim()) e.city = "La ciudad es obligatoria";
+    if (!(form.country || "").trim()) e.country = "El país es obligatorio";
     if (form.price_per_night <= 0)
       e.price_per_night = "El precio debe ser mayor a 0";
     if (form.max_guests < 1) e.max_guests = "Mínimo 1 huésped";
     if (form.bedrooms < 1) e.bedrooms = "Mínimo 1 habitación";
     if (form.bathrooms < 1) e.bathrooms = "Mínimo 1 baño";
-    if (form.images.length === 0) e.images = "Sube al menos 1 imagen";
+    if ((form.images || []).length === 0) e.images = "Sube al menos 1 imagen";
 
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -181,9 +182,9 @@ export default function AccommodationForm() {
   };
 
   const handleAmenityToggle = (amenity: string) => {
-    const newAmenities = form.amenities.includes(amenity)
-      ? form.amenities.filter((a) => a !== amenity)
-      : [...form.amenities, amenity];
+    const newAmenities = (form.amenities || []).includes(amenity)
+      ? (form.amenities || []).filter((a) => a !== amenity)
+      : [...(form.amenities || []), amenity];
 
     setForm((f) => ({ ...f, amenities: newAmenities }));
     validateField("amenities", newAmenities);
@@ -192,7 +193,9 @@ export default function AccommodationForm() {
   const handleImageDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const dropped = Array.from(e.dataTransfer.files);
-    setFiles((f) => [...f, ...dropped].slice(0, 6 - form.images.length));
+    setFiles((f) =>
+      [...f, ...dropped].slice(0, 6 - (form.images || []).length),
+    );
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -205,7 +208,7 @@ export default function AccommodationForm() {
     const uploadedUrls = await Promise.all(
       files.map((f) => uploadImage(f, "accommodation-images")),
     );
-    const finalImages = [...form.images, ...uploadedUrls].slice(0, 6);
+    const finalImages = [...(form.images || []), ...uploadedUrls].slice(0, 6);
 
     // 2. Payload completo
     const payload = { ...form, images: finalImages };
@@ -237,7 +240,7 @@ export default function AccommodationForm() {
             Imágenes (máx. 6)
           </label>
           <div className="mt-1 grid grid-cols-3 gap-4">
-            {form.images.map((img, i) => (
+            {form.images?.map((img, i) => (
               <img
                 key={i}
                 src={img}
@@ -253,7 +256,7 @@ export default function AccommodationForm() {
                 className="h-32 w-full rounded-lg object-cover"
               />
             ))}
-            {form.images.length + files.length < 6 && (
+            {(form.images || []).length + files.length < 6 && (
               <div
                 onDrop={handleImageDrop}
                 onDragOver={(e) => e.preventDefault()}
@@ -271,7 +274,7 @@ export default function AccommodationForm() {
               setFiles(
                 Array.from(e.target.files ?? []).slice(
                   0,
-                  6 - form.images.length,
+                  6 - (form.images?.length || 0),
                 ),
               )
             }
@@ -301,7 +304,7 @@ export default function AccommodationForm() {
             </label>
             <input
               name="location"
-              value={form.location}
+              value={form.location || undefined}
               onChange={handleChange}
               required
               className="bg-background-light dark:bg-background-dark border-border-light dark:border-border-dark focus:ring-primary focus:border-primary mt-1 block w-full rounded-lg border px-4 py-3 shadow-sm focus:ring-2 focus:outline-none"
@@ -317,7 +320,7 @@ export default function AccommodationForm() {
             </label>
             <input
               name="city"
-              value={form.city}
+              value={form.city || undefined}
               onChange={handleChange}
               required
               className="bg-background-light dark:bg-background-dark border-border-light dark:border-border-dark focus:ring-primary focus:border-primary mt-1 block w-full rounded-lg border px-4 py-3 shadow-sm focus:ring-2 focus:outline-none"
@@ -333,7 +336,7 @@ export default function AccommodationForm() {
             </label>
             <input
               name="country"
-              value={form.country}
+              value={form.country || undefined}
               onChange={handleChange}
               required
               className="bg-background-light dark:bg-background-dark border-border-light dark:border-border-dark focus:ring-primary focus:border-primary mt-1 block w-full rounded-lg border px-4 py-3 shadow-sm focus:ring-2 focus:outline-none"
@@ -350,7 +353,7 @@ export default function AccommodationForm() {
           </label>
           <textarea
             name="description"
-            value={form.description}
+            value={form.description || undefined}
             onChange={handleChange}
             rows={4}
             required
@@ -482,7 +485,7 @@ export default function AccommodationForm() {
                 type="button"
                 onClick={() => handleAmenityToggle(a)}
                 className={`cursor-pointer rounded-full px-3 py-1 text-sm font-medium ${
-                  form.amenities.includes(a)
+                  form.amenities?.includes(a)
                     ? "bg-primary text-white"
                     : "text-text-primary-light dark:text-text-primary-dark bg-gray-200 dark:bg-gray-700"
                 }`}

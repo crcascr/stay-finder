@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { MapPin, Star,Users } from "lucide-react";
+import { MapPin, Star, Users } from "lucide-react";
 
 import type { Accommodation } from "@/types/accommodation";
 
@@ -30,6 +30,10 @@ export default function AccommodationCard({
     return labels[category] || category;
   };
 
+  const images = accommodation.images?.length
+    ? accommodation.images
+    : ["/placeholder-house.jpg"];
+
   return (
     <Link
       to={`/accommodation/${accommodation.id}`}
@@ -38,7 +42,7 @@ export default function AccommodationCard({
       {/* Imagen */}
       <div className="relative h-64 overflow-hidden">
         <img
-          src={accommodation.images[0]}
+          src={images[0]}
           alt={accommodation.title}
           className="h-full w-full transform object-cover transition-transform duration-300 group-hover:scale-110"
         />
