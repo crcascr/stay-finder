@@ -1,53 +1,86 @@
+import { type FocusEvent, type FormEvent,useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { Search } from "lucide-react";
-import { useState } from "react";
 
-interface HeroSectionProps {
-  onSearch?: (query: string) => void;
-}
+import { mockAccommodations } from "@/data/mockAccommodations";
 
-export default function HeroSection({ onSearch }: HeroSectionProps) {
+const heroImages = mockAccommodations.slice(0, 5).map((acc) => acc.images[0]);
+
+export default function HeroSection() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [inputFocus, setInputFocus] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const navigate = useNavigate();
 
-  const handleSearch = (e: React.FormEvent) => {
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === heroImages.length - 1 ? 0 : prevIndex + 1,
+      );
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const handleSearch = (e: FormEvent) => {
     e.preventDefault();
-    if (onSearch && searchQuery.trim()) {
-      onSearch(searchQuery);
+    if (searchQuery.trim()) {
+      navigate(`/explore?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
+  const handleBlur = (e: FocusEvent<HTMLDivElement>) => {
+    if (
+      e.currentTarget &&
+      !e.currentTarget.contains(e.relatedTarget as Node | null)
+    ) {
+      setInputFocus(false);
     }
   };
 
   return (
     <section
-      className="relative h-[600px] flex items-center justify-center bg-cover bg-center"
-      style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%), url("https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=80")`,
-      }}
+      className="relative flex h-[600px] items-center justify-center bg-cover bg-center transition-all duration-1000 ease-in-out"
+      style={{ backgroundImage: `url("${heroImages[currentImageIndex]}")` }}
     >
-      <div className="container mx-auto px-6 lg:px-8 text-center text-white">
-        <h1 className="text-4xl md:text-6xl font-black leading-tight tracking-tighter text-shadow-hero mb-4">
+      <div
+        className="absolute inset-0 bg-black/40 transition-opacity duration-300 ease-in-out"
+        style={{ opacity: inputFocus ? 0.8 : 0.3 }}
+      ></div>
+
+      <div className="relative z-10 container mx-auto px-6 text-center text-white lg:px-8">
+        <h1 className="text-shadow-hero mb-4 text-4xl leading-tight font-black tracking-tighter md:text-6xl">
           Encuentra tu escapada perfecta
         </h1>
-        <p className="text-lg md:text-xl font-light max-w-2xl mx-auto text-shadow-hero mb-8">
+        <p className="text-shadow-hero mx-auto mb-8 max-w-2xl text-lg font-light md:text-xl">
           Descubre alojamientos únicos y experiencias alrededor del mundo.
         </p>
 
-        <div className="max-w-2xl mx-auto">
+        <div className="relative mx-auto max-w-2xl" onBlur={handleBlur}>
           <form onSubmit={handleSearch}>
-            <div className="flex items-center bg-surface-light dark:bg-surface-dark rounded-full shadow-lg p-2">
-              <div className="pl-4 pr-2 text-text-secondary-light dark:text-text-secondary-dark">
+            <div
+              className={`bg-surface-light dark:bg-surface-dark border-border-light dark:border-border-dark flex items-center rounded-full border-2 p-2 shadow-lg transition-all duration-300 ease-in-out ${
+                inputFocus ? "border-primary" : ""
+              }`}
+            >
+              <div className="text-text-secondary-light dark:text-text-secondary-dark hidden pr-2 pl-4 md:block">
                 <Search size={24} />
               </div>
               <input
-                className="flex-grow bg-transparent text-text-primary-light dark:text-text-primary-dark placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark focus:outline-none px-2 text-lg"
+                className="text-text-primary-light dark:text-text-primary-dark placeholder:text-text-secondary-light dark:placeholder:text-text-secondary-dark flex-grow bg-transparent px-2 text-lg focus:outline-none"
                 placeholder="¿A dónde vas?"
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setInputFocus(true)}
               />
               <button
                 type="submit"
-                className="px-6 py-3 rounded-full text-base font-semibold bg-primary text-white hover:bg-primary/90 transition-colors shrink-0"
+                className="bg-primary hover:bg-primary/90 shrink-0 rounded-full px-3 py-3 text-base font-semibold text-white transition-colors md:px-6"
               >
-                Buscar
+                <span className="hidden md:block">Buscar</span>
+                <Search className="block md:hidden" size={20} />
               </button>
             </div>
           </form>

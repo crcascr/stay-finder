@@ -21,6 +21,7 @@ export interface Accommodation {
   is_available: boolean;
   created_by?: string;
   created_at: string;
+  unavailable_dates: string[];
 }
 
 export interface SearchFilters {
